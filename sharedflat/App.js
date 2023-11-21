@@ -9,8 +9,24 @@ import GameScreen from './screens/GameScreen';
 import CalendarScreen from './screens/CalendarScreen';
 import FinanceScreen from './screens/FinanceScreen';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
+
+function DashboardStackNavigator() {
+  return (
+    <Stack.Navigator>
+       <Stack.Screen name="DashboardHome" component={DashboardScreen} options={{headerShown: false}} />
+      <Stack.Screen name="TasksScreen" component={TasksScreen} />
+      <Stack.Screen name="FinanceScreen" component={FinanceScreen} />
+      <Stack.Screen name="CalendarScreen" component={CalendarScreen} />
+      <Stack.Screen name="GameScreen" component={GameScreen} />
+    </Stack.Navigator>
+  );
+}
 
 const Tab = createBottomTabNavigator();
+
 
 export default function App() {
   return (
@@ -54,7 +70,7 @@ export default function App() {
       >
         <Tab.Screen name="Finance" component={FinanceScreen} />
         <Tab.Screen name="Calendar" component={CalendarScreen} />
-        <Tab.Screen name="Dashboard" component={DashboardScreen} />
+        <Tab.Screen name="Dashboard" component={DashboardStackNavigator} />
         <Tab.Screen name="Tasks" component={TasksScreen} />
         <Tab.Screen name="Game" component={GameScreen} />
       </Tab.Navigator>
