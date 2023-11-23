@@ -5,20 +5,23 @@ export default function AddButton({ handlePress }){
     return(
         <TouchableOpacity style={{
             position: 'absolute',
-            right: 16,
-            bottom: 16,
+            right: 30,
+            bottom: 30,
             backgroundColor: 'purple',
-            borderRadius: 28,
             width: 56,
             height: 56,
+            borderRadius: 28,
             justifyContent: 'center',
             alignItems: 'center',
-            elevation: 4,
+            elevation: 5,
+            shadowRadius: 5,
             shadowOpacity: 0.3,
-            shadowRadius: 3,
-            shadowOffset: { width: 0, height: 2 },
+            shadowColor: 'black',
+            shadowOffset: { height: 2, width: 0 },
           }} onPress={() => {handlePress()}}>
-            <Ionicons name="add" size={24} color="white" />
+            <Ionicons name="add" size={30} color="white" style={{
+                paddingLeft: 2
+            }} />
           </TouchableOpacity>
     )
 }

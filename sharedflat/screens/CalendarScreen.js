@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Calendar } from 'react-native-calendars';
+import AddButton from '../components/AddButton';
 
 const getDateString = (date) => {
   const year = date.getFullYear();
@@ -86,9 +87,7 @@ export default function CalendarScreen() {
                     )}
                 </View>
             </ScrollView>
-            <TouchableOpacity style={styles.fab} onPress={() => {}}>
-                <Ionicons name="add" size={24} color="white" />
-            </TouchableOpacity>
+            <AddButton handlePress={() => {}}/>
         </View>
     );
 }

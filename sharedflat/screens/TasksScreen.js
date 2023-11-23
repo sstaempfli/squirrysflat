@@ -7,43 +7,48 @@ import { Octicons } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import BackCard from "../components/BackCard";
 import AddButton from "../components/AddButton";
+import { useTasks, useTasksDispatch } from '../context/TasksContext'
 
-let today = new Date();
-const tomorrow = new Date(today);
-tomorrow.setDate(tomorrow.getDate() + 1);
-const anotherDay = new Date(today);
-anotherDay.setDate(anotherDay.getDate() + 5);
 
-let initialTasks = [
-  {
-      id: 1, 
-      name: 'Vaccum', 
-      description: "Very cool task", 
-      assignedTo: "Bob",
-      due: today,
-      uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
-  },
-  {
-      id: 2,
-      name: 'Wash Dishes',
-      description: "Very cool task",
-      assignedTo: "Bob",
-      due: new Date(tomorrow),
-      uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
-  },
-  { 
-      id: 3,
-      name: 'Cook for friends', 
-      description: "Very cool task",
-      assignedTo: "Me",
-      due: new Date(anotherDay),
-      uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDt6YUZ8byMEXMW-FqLnk72EfrpTC-hcBKjQ&usqp=CAU"
-  }
-];
+// let today = new Date();
+// const tomorrow = new Date(today);
+// tomorrow.setDate(tomorrow.getDate() + 1);
+// const anotherDay = new Date(today);
+// anotherDay.setDate(anotherDay.getDate() + 5);
+
+// let initialTasks = [
+//   {
+//       id: 1, 
+//       name: 'Vaccum', 
+//       description: "Very cool task", 
+//       assignedTo: "Bob",
+//       due: today,
+//       uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+//   },
+//   {
+//       id: 2,
+//       name: 'Wash Dishes',
+//       description: "Very cool task",
+//       assignedTo: "Bob",
+//       due: new Date(tomorrow),
+//       uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+//   },
+//   { 
+//       id: 3,
+//       name: 'Cook for friends', 
+//       description: "Very cool task",
+//       assignedTo: "Me",
+//       due: new Date(anotherDay),
+//       uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDt6YUZ8byMEXMW-FqLnk72EfrpTC-hcBKjQ&usqp=CAU"
+//   }
+// ];
 
 
 export default function TasksScreen() {
   let [activeRow, setActiveRow] = useState(-1);
+  const tasks = useTasks();
+  const dispatch = useTasksDispatch();
+
 
   function completeTask(id, event){
     if(event.value >= Dimensions.get('window').width){
@@ -64,7 +69,7 @@ export default function TasksScreen() {
             paddingVertical: 20,
             paddingHorizontal: 10,
           }}
-          data={initialTasks}
+          data={tasks}
           renderItem={ (data, rowMap) => {
             return (
               <SwipeRow
@@ -72,11 +77,11 @@ export default function TasksScreen() {
                 rightOpenValue={-(Dimensions.get('window').width/3.2)}
                 // leftActivationValue={100}
                 // rightActivationValue={-50}
-                disableRightSwipe={data.item.id == activeRow}
-                disableLeftSwipe={data.item.id == activeRow}
+                // disableRightSwipe={data.item.id == activeRow}
+                // disableLeftSwipe={data.item.id == activeRow}
                 onSwipeValueChange={(event) => completeTask(data.item.id, event)}
               >
-                <BackCard />
+                <BackCard task={ data.item }/>
                 <TaskCard
                   task={data.item}
                   activeRow={activeRow}
