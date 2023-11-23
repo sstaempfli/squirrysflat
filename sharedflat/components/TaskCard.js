@@ -105,8 +105,55 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                 activeOpacity={1}
             >  
                 <View style={styles.container}>
-                    <Text>{task.name}</Text>
-                    <Text>{task.description}</Text>
+                    <Text style={{
+                        alignSelf: "center",
+                        fontWeight: '500',
+                        fontSize: 30
+                    }}>{task.name}</Text>
+                    <View style={{
+                        flexDirection: "row",
+                    }}>
+                        <View style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            paddingVertical: 10
+                        }}>
+                            <Text style={{
+                                fontSize: 15,
+                                fontWeight: '500',
+                                paddingRight: 10,
+                            }}>Assigned to:</Text>
+                            <Avatar 
+                                size={32}
+                                rounded
+                                source={{uri: task.uri}}
+                            />
+                            <Text style={{
+                                paddingHorizontal: 5,
+                                fontWeight: "400"
+                            }}>
+                                {task.assignedTo}
+                            </Text>
+                        </View>
+                        <View style={{
+                            flexDirection: "row",
+                            flex: 1
+                        }}>
+                            {due}
+                        </View>
+                    </View>
+                        
+                    <View>
+                        <Text style={{
+                            fontWeight: '500',
+                            fontSize: 15,
+                        }}>Description: </Text>
+                        <Text style={{
+                            fontWeight: '200'
+                        }}>{task.description}</Text>
+                    </View>
+                    
                 </View>   
             </TouchableOpacity>
         );

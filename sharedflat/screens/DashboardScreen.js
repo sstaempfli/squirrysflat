@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
 },
 previewContainer: {
     width: '90%', 
-    maxHeight: 290,
+    maxHeight: '40%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
