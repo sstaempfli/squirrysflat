@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Modal } from 'react-native';
+import AddButton from '../components/AddButton';
 
 const FinanceScreen = () => {
   const [activeTab, setActiveTab] = useState('byYou');
@@ -133,9 +134,7 @@ const FinanceScreen = () => {
      
 
       {/* Add Button */}
-      <TouchableOpacity style={styles.addButton}>
-        <Ionicons name="add" size={30} color="white" />
-      </TouchableOpacity>
+      <AddButton handlePress={() => {}}/>
       {selectedPayment && <PaymentDetailsModal payment={selectedPayment} />}
     </View>
   );
