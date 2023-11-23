@@ -56,28 +56,35 @@ function tasksReducer(tasks, action) {
   }
 }
 
-const today = new Date();
+let today = new Date();
+const tomorrow = new Date(today);
+tomorrow.setDate(tomorrow.getDate() + 1);
+const anotherDay = new Date(today);
+anotherDay.setDate(anotherDay.getDate() + 5);
 
-const initialTasks = [
-    {
-        id: 0, 
-        name: 'Philosopher’s Path', 
-        description: "Very cool task", 
-        assignedTo: "Bob",
-        due: today 
-    },
-    {
-        id: 1,
-        name: 'Visit the temple',
-        description: "Very cool task",
-        assignedTo: "Bob",
-        due: new Date(today.getDate() + 1)
-    },
-    { 
-        id: 2,
-        name: 'Drink matcha', 
-        description: "Very cool task",
-        assignedTo: "Laura",
-        due: new Date(today.getDate() + 3)
-    }
+let initialTasks = [
+  {
+      id: 1, 
+      name: 'Vaccum', 
+      description: "Very cool task", 
+      assignedTo: "Bob",
+      due: today,
+      uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+  },
+  {
+      id: 2,
+      name: 'Wash Dishes',
+      description: "Very cool task",
+      assignedTo: "Bob",
+      due: new Date(tomorrow),
+      uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+  },
+  { 
+      id: 3,
+      name: 'Cook for friends', 
+      description: "Very cool task",
+      assignedTo: "Me",
+      due: new Date(anotherDay),
+      uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+  }
 ];

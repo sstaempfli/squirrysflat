@@ -1,63 +1,89 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'; // Make sure to install this package
-import { Calendar } from 'react-native-calendars'; // Make sure to install this package
+import { Ionicons } from '@expo/vector-icons';
+import { Calendar } from 'react-native-calendars';
+
+const getDateString = (date) => {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
 
 export default function CalendarScreen() {
-    // Dummy data for events
-    const events = {
-        today: [{ time: '18:00', title: 'Dinner with flat' }],
-        tomorrow: [{ time: '15:00', title: 'Pilates' }]
+    const today = getDateString(new Date());
+    const tomorrow = getDateString(new Date(Date.now() + 86400000));
+
+    // Dummy data for events, indexed by date
+    const eventsByDate = {
+        [today]: [{ time: '18:00', title: 'Dinner with flat' }],
+        [tomorrow]: [{ time: '15:00', title: 'Pilates' }],
+        ['2023-11-27']: [{time:'', title: 'Bob\'s Birthday'}],
+        ['2023-11-30']: [{time:'13:00', title: 'Lunch with Alice'}],
+        ['2023-12-05']: [{time:'16:00', title: 'Hairdresser'}],
+        ['2023-12-15']: [{time:'20:00', title: 'Movie Night'}]
+        // Add more events for different dates as needed
+    };
+
+    // Initialize marked dates with events
+    const initialMarkedDates = Object.keys(eventsByDate).reduce((acc, date) => {
+        acc[date] = { marked: true, dotColor: 'purple' };
+        if (date === today) {
+            acc[date].selected = true;
+        }
+        return acc;
+    }, {});
+
+    // State to manage the selected date and marked dates on the calendar
+    const [selectedDate, setSelectedDate] = useState(today);
+    const [markedDates, setMarkedDates] = useState(initialMarkedDates);
+
+    // When a date is selected, update the selectedDate and markedDates state
+    const onDayPress = (day) => {
+        setSelectedDate(day.dateString);
+        setMarkedDates({
+            ...markedDates,
+            [selectedDate]: { ...markedDates[selectedDate], selected: false }, // Deselect current date
+            [day.dateString]: { ...markedDates[day.dateString], selected: true }, // Select new date
+        });
     };
 
     return (
         <View style={styles.container}>
-             <Calendar 
-                markedDates={{ 
-                    '2023-11-17': { selected: true, marked: true }, 
-                    '2023-11-16': { marked: true, dotColor: 'purple' }, 
-                    '2023-11-18': { 
-                        marked: true, dotColor: 'purple', 
-                        activeOpacity: 0 
-                    }, 
-                }} 
-                theme={{ 
-                    backgroundColor: '#ffffff', 
-                    calendarBackground: '#ffffff', 
-                    textSectionTitleColor: '#b6c1cd', 
-                    selectedDayBackgroundColor: '#800080', 
-                    selectedDayTextColor: '#ffffff', 
-                    todayTextColor: '#00adf5', 
-                    dayTextColor: '#2d4150', 
-                    textDisabledColor: '#d9e1e8', 
-                    dotColor: '#800080', 
-                    selectedDotColor: '#800080', 
-                    arrowColor: 'black', 
-                    monthTextColor: '#00adf5', 
-                    indicatorColor: 'black', 
-                    textDayFontSize: 16, 
-                    textMonthFontSize: 16, 
-                    textDayHeaderFontSize: 16 
-                }} 
+            <Calendar 
+                markedDates={markedDates}
+                theme={{  
+                backgroundColor: '#ffffff', 
+                calendarBackground: '#ffffff', 
+                textSectionTitleColor: '#b6c1cd', 
+                selectedDayBackgroundColor: '#800080', 
+                selectedDayTextColor: '#ffffff', 
+                todayTextColor: 'purple', 
+                dayTextColor: '#2d4150', 
+                textDisabledColor: '#d9e1e8', 
+                dotColor: '#800080', 
+                selectedDotColor: '#800080', 
+                arrowColor: 'black', 
+                monthTextColor: 'purple', 
+                indicatorColor: 'black', 
+                textDayFontSize: 16, 
+                textMonthFontSize: 25, 
+                textDayHeaderFontSize: 15 
+            }} 
+                onDayPress={onDayPress}
             /> 
             <ScrollView style={styles.scrollView}>
                 <View style={styles.eventGroup}>
-                    <Text style={styles.eventGroupTitle}>Today</Text>
-                    {events.today.map((event, index) => (
-                        <View key={index} style={styles.event}>
-                            <Text style={styles.eventTime}>{event.time}</Text>
-                            <Text style={styles.eventTitle}>{event.title}</Text>
-                        </View>
-                    ))}
-                </View>
-                <View style={styles.eventGroup}>
-                    <Text style={styles.eventGroupTitle}>Tomorrow</Text>
-                    {events.tomorrow.map((event, index) => (
-                        <View key={index} style={styles.event}>
-                            <Text style={styles.eventTime}>{event.time}</Text>
-                            <Text style={styles.eventTitle}>{event.title}</Text>
-                        </View>
-                    ))}
+                    {eventsByDate[selectedDate]?.length > 0 ? (
+                        eventsByDate[selectedDate].map((event, index) => (
+                            <View key={index} style={styles.event}>
+                                <Text style={styles.eventTime}>{event.time}</Text>
+                                <Text style={styles.eventTitle}>{event.title}</Text>
+                            </View>
+                        ))
+                    ) : (
+                        <Text style={styles.noEventsText}>No events</Text>
+                    )}
                 </View>
             </ScrollView>
             <TouchableOpacity style={styles.fab} onPress={() => {}}>
@@ -66,6 +92,7 @@ export default function CalendarScreen() {
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
@@ -89,10 +116,12 @@ const styles = StyleSheet.create({
     },
     eventTime: {
         fontWeight: 'bold',
-        marginRight: 8,
+        marginRight: 20,
+        fontSize: 18
     },
     eventTitle: {
         flex: 1,
+        fontSize: 18
     },
     fab: {
         position: 'absolute',
@@ -109,4 +138,10 @@ const styles = StyleSheet.create({
         shadowRadius: 3,
         shadowOffset: { width: 0, height: 2 },
     },
+    noEventsText: {
+      fontSize: 16,
+      fontStyle: 'italic',
+      textAlign: 'center',
+      marginTop: 16,
+  },
 });
