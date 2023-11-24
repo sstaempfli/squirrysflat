@@ -3,44 +3,66 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { useState } from 'react'
 import { Alert, Modal, Pressable, Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { useTasks, useTasksDispatch } from '../context/TasksContext'
+import FormComponent from './FormComponent';
+
 
 
 export default function BackCard({ task }){
     const dispatch = useTasksDispatch();
     const tasks = useTasks();
-    const [ editModalVisible, setEditModal ] = useState(false);
+   // const [ editModalVisible, setEditModal ] = useState(false); i switched it to isFormVisible
+
+    const [isFormVisible, setIsFormVisible] = useState(false);
+    const [formMode, setFormMode] = useState('edit'); // 'create' or 'edit'
+    const [initialData, setInitialData] = useState({}); // Data for editing
+    
+    const dummyInitialData = {
+        title: 'Grocery Shopping',
+        subtasks: ['Buy milk', 'Buy bread', 'Get apples'],
+        dueDate: '2023-04-15',
+        repeat: 'Weekly',
+        assignTo: 'Self',
+        priority: 5,
+      };
+    const handleOpenForm = (mode, data = {}) => {
+        setFormMode(mode);
+        setInitialData(data);
+        setIsFormVisible(true);
+      };
+    
+      const handleEditTask = () => {
+        handleOpenForm('edit', dummyInitialData);
+      };
+      const handleCloseForm = () => {
+        // Logic to close the form
+        setIsFormVisible(false);
+      };
+    
+      const handleSubmitForm = (formData) => {
+        // Handle form submission logic here
+        setIsFormVisible(false);
+      };
     return (
         <>
         <Modal
             animationType="slide"
             transparent={true}
-            visible={editModalVisible}
-            onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setEditModal(!editModalVisible);
-            }}>
+            visible={isFormVisible}
+            onRequestClose={() => setIsFormVisible(false)}
+            >
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    {/* 
-                        
-                        Add Edit Component here
-
-                        Just add some text input for Name, Description, A slider for Nuts
-                        maybe a dropdown for recurring tasks
-                        and assigned to also a drop down
-
-                        I ll connect the state afterwards (don t worry about the inital 
-                        values in the inputs, i ll do that)
-
-                        also add a submit button or smth like that, otherwise i can also 
-                        make it dynamic, so no submit button is needed
-
-                    */}
-                    <Pressable
+                     <FormComponent
+                        initialData={initialData}
+                        onSubmit={handleSubmitForm}
+                        mode={formMode}
+                        onClose={handleCloseForm} 
+                    />
+                    {/*<Pressable
                     style={[styles.button, styles.buttonClose]}
-                    onPress={() => setEditModal(!editModalVisible)}>
+                    onPress={() => setIsFormVisible(false)}>
                     <Text style={styles.textStyle}>Hide Modal</Text>
-                    </Pressable>
+    </Pressable>   Don't neeed it there is a cancel button */} 
                 </View>
             </View>
         </Modal>
@@ -60,9 +82,7 @@ export default function BackCard({ task }){
                 }}>Complete</Text>
             </View>
             <View style={ styles.editDeleteCont }>
-                <TouchableOpacity style={ styles.editCont } onPress={() => {
-                    setEditModal(true);
-                }}>
+                <TouchableOpacity style={ styles.editCont } onPress={handleEditTask}>
                     <View >
                         <FontAwesome5 name="edit" size={28} color="white"/>
                     </View >
@@ -132,7 +152,7 @@ const styles = StyleSheet.create({
         height: '50%',
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        padding: 20,
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
