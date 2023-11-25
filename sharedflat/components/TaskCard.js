@@ -1,7 +1,12 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Avatar, Badge, Icon, withBadge, CheckBox } from '@rneui/themed';
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+const formatDate = (dateString) => {
+    const options = { month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+};
 
 function simplifyDate(date){
     const today = new Date();
@@ -32,7 +37,7 @@ function simplifyDate(date){
         badge = "warning"
     }
     else{
-        txt = String(date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear())
+        txt = formatDate(date);
         badge = "success"
     }
     return (
@@ -127,7 +132,7 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                             <Avatar 
                                 size={32}
                                 rounded
-                                source={{uri: task.uri}}
+                                source={{ uri: task.uri }}
                             />
                             <Text style={{
                                 paddingHorizontal: 5,
@@ -153,7 +158,31 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                             fontWeight: '200'
                         }}>{task.description}</Text>
                     </View>
-                    
+                    <View style={{
+                        flexDirection: "row",
+                        paddingTop: 5,
+                    }}>
+                        <View style={{flex: 1}} />
+                        <View style={{
+                            flex: 1,
+                            flexDirection: "row-reverse",
+                        }}>
+                            <Text style={{
+                                fontSize: 15,
+                                fontWeight: '400',
+                                paddingLeft: 5,
+                                
+                            }}>{task.points}</Text>
+                            <Image source={require('../screens/Shop/nut.png')}
+                                style={{
+                                    height: 20,
+                                    width: 20
+                                }}
+                            ></Image>
+                        </View>
+                        
+                        
+                    </View>
                 </View>   
             </TouchableOpacity>
         );

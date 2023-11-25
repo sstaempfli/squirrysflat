@@ -1,8 +1,11 @@
-import { createContext, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer, useState } from 'react';
 
 const TasksContext = createContext(null);
 
 const TasksDispatchContext = createContext(null);
+
+const NutsContext = createContext(null)
+const setNutsContext = createContext(null)
 
 export function TasksProvider({ children }) {
   const [tasks, dispatch] = useReducer(
@@ -10,17 +13,32 @@ export function TasksProvider({ children }) {
     initialTasks
   );
 
+  const [ myNuts, setMyNuts ] = useState(100)
+
   return (
-    <TasksContext.Provider value={tasks}>
-      <TasksDispatchContext.Provider value={dispatch}>
-        {children}
-      </TasksDispatchContext.Provider>
-    </TasksContext.Provider>
+    <NutsContext.Provider value={myNuts}>
+      <setNutsContext.Provider value={setMyNuts}>
+        <TasksContext.Provider value={tasks}>
+          <TasksDispatchContext.Provider value={dispatch}>
+            {children}
+          </TasksDispatchContext.Provider>
+        </TasksContext.Provider>
+      </setNutsContext.Provider>
+    </NutsContext.Provider>
+    
   );
 }
 
 export function useTasks() {
   return useContext(TasksContext);
+}
+
+export function useMyNuts(){
+  return useContext(NutsContext)
+}
+
+export function useSetMyNuts(){
+  return useContext(setNutsContext)
 }
 
 export function useTasksDispatch() {
@@ -64,27 +82,33 @@ anotherDay.setDate(anotherDay.getDate() + 5);
 
 let initialTasks = [
   {
+      key: '1',
       id: 1, 
       name: 'Vaccum', 
       description: "Very cool task", 
-      assignedTo: "Bob",
+      assignedTo: "Lino",
       due: today,
+      points: 2,
       uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
   },
   {
+      key: '2',
       id: 2,
       name: 'Wash Dishes',
       description: "Very cool task",
-      assignedTo: "Bob",
+      assignedTo: "Lino",
       due: new Date(tomorrow),
+      points: 2,
       uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
   },
   { 
+      key: '3',
       id: 3,
       name: 'Cook for friends', 
       description: "Very cool task",
-      assignedTo: "Me",
+      assignedTo: "You",
       due: new Date(anotherDay),
-      uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+      points: 4,
+      uri: "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
   }
 ];

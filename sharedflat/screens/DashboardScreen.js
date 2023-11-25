@@ -2,9 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useState} from 'react';
+import { useTasks } from '../context/TasksContext';
 
 export default function DashboardScreen({ navigation }) {
     // Function to navigate to different screens
+    const tasks = useTasks();
+
     const navigateToScreen = (screenName) => {
       let routeName = '';
     
@@ -73,13 +76,13 @@ export default function DashboardScreen({ navigation }) {
                 style={styles.previewContainer} 
                 onPress={() => navigateToScreen('TasksScreen')}
             >
-               <Text style={styles.previewText}> Your Tasks</Text>
+               <Text style={styles.previewText}> Your Upcoming Tasks</Text>
         {/* Preview of the Tasks */}
         <View style={styles.tasksListPreview}>
-          {yourTasks.slice(0, 3).map((task, index) => (
+          {tasks.filter((task) => task.assignedTo == "You").slice(0, 3).map((task, index) => (
             <View key={index} style={styles.taskPreview}>
-              <Text style={styles.taskDueDate}>{formatDate(task.dueDate)}</Text>
-              <Text style={styles.taskTitle}>{task.title}</Text>
+              <Text style={styles.taskDueDate}>{formatDate(task.due)}</Text>
+              <Text style={styles.taskTitle}>{task.name}</Text>
             </View>
           ))}
         </View>

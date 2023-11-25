@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView } from 'react-native';
+import { useMyNuts } from '../context/TasksContext';
 
 
 const GameScreen = () => {
   const [activeTab, setActiveTab] = useState('you');
+  const nuts = useMyNuts()
 
   const renderContent = () => {
     switch (activeTab) {
@@ -80,7 +82,7 @@ const ShopView = () => {
   return (
   <ScrollView style={styles.shopContainer}>
     <Text style={styles.shopTitle}>Shop</Text>
-    <Text style={styles.totalAmount}>Total: 100 <Image source={nutImage} style={styles.nutImage} /> </Text>
+    <Text style={styles.totalAmount}>Total: {nuts} <Image source={nutImage} style={styles.nutImage} /> </Text>
     <Text style={styles.sectionTitle}>Hygiene Packets</Text>
     <View style={styles.itemsContainer}>
       {/* Each item in a row */}
