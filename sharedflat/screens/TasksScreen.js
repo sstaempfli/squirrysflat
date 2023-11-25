@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, Dimensions, Alert, Modal } from "react-native";
+import { FlatList, View, Text, Dimensions, Alert, Modal } from "react-native";
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import TaskCard from "../components/TaskCard";
 import BackCard from "../components/BackCard";
@@ -48,11 +48,11 @@ export default function TasksScreen() {
       key: String(currentId)}})
   }
 
-  function completeTask(task, event, rowMap){
+  function completeTask(task, event, rowRef){
     if(event.value > Dimensions.get('window').width){
       if(bool && task.assignedTo != "You"){
         setBool(false)
-        rowMap[task.key].closeRow()
+        rowRef.closeRow()
         Alert.alert("Whoopsy", "Are you really completing someone else's task? Are you sure you want to steal his nuts?", [
           {
             text: 'Cancel',
@@ -103,20 +103,25 @@ export default function TasksScreen() {
         fontWeight: '100',
         paddingTop: 20
       }}>Swipe right to complete</Text>
-      <SwipeListView
+      <FlatList
           style={{
             paddingVertical: 20,
             paddingHorizontal: 10,
           }}
           data={sortedTasks}
           renderItem={ (data, rowMap) => {
+            let rowRef = null;
             return (
               <SwipeRow
                 leftOpenValue={Dimensions.get('window').width}
                 rightOpenValue={-(Dimensions.get('window').width/3.2)}
                 // disableRightSwipe={true}
                 // disableLeftSwipe={true}
-                onSwipeValueChange={(event) => completeTask(data.item, event, rowMap)}
+                ref={(ref) => rowRef = ref}
+                onRowPress={() => {
+                  activeRow != data.item.id ? setActiveRow(data.item.id) : setActiveRow(-1)
+                }}
+                onSwipeValueChange={(event) => completeTask(data.item, event, rowRef)}
               >
                 <BackCard task={ data.item }/>
                 <TaskCard
@@ -127,7 +132,6 @@ export default function TasksScreen() {
               </SwipeRow>
             )
           }}
-
       />
       <AddButton handlePress={() => setIsFormVisible(true)}/>
     </>

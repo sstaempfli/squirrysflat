@@ -134,9 +134,7 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
 
     if(task.id != activeRow){
         return (
-            <TouchableOpacity
-                onLongPress={() => setActiveRow(task.id)}
-                activeOpacity={1}
+            <View
                 style={styles.card}
             >
                 <View style={{
@@ -172,12 +170,14 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                     </View>
                 </View>
                 
-            </TouchableOpacity>
+            </View>
         )
     }
     else{
         return (
-            <>
+            <View
+                style={styles.bigger}
+            >  
                 <Modal
                     animationType="slide"
                     transparent={true}
@@ -189,145 +189,139 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                     onClose={handleCloseForm} 
                     />
                 </Modal>
-                <TouchableOpacity
-                    onLongPress={() => setActiveRow(-1)}
-                    style={styles.bigger}
-                    activeOpacity={1}
-                >  
-                    <View style={styles.container}>
+                <View style={styles.container}>
+                    <View style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between"
+                    }}>
+                        <TouchableOpacity style={{
+                            flex: 1
+                        }} onPress={() => {handleComplete(task)}}>
+                            <Octicons name="tasklist" size={28} color="purple"/>
+                        </TouchableOpacity>
+                        <Text numberOfLines={1} style={{
+                            flex: 3,
+                            alignSelf: "center",
+                            fontWeight: '500',
+                            fontSize: 25
+                        }}>{task.name}</Text>
                         <View style={{
+                            flex: 1.5,
                             flexDirection: "row",
-                            alignItems: "center",
-                            justifyContent: "space-between"
+                            paddingLeft: '5%',
                         }}>
                             <TouchableOpacity style={{
                                 flex: 1
-                            }} onPress={() => {handleComplete(task)}}>
-                                <Octicons name="tasklist" size={28} color="purple"/>
+                            }} onPress={() => {setIsFormVisible(true)}}>
+                                <FontAwesome5 name="edit" size={28} color="purple"/>
                             </TouchableOpacity>
-                            <Text numberOfLines={1} style={{
-                                flex: 3,
-                                alignSelf: "center",
-                                fontWeight: '500',
-                                fontSize: 25
-                            }}>{task.name}</Text>
-                            <View style={{
-                                flex: 1.5,
-                                flexDirection: "row",
-                                paddingLeft: '5%',
-                            }}>
-                                <TouchableOpacity style={{
-                                    flex: 1
-                                }} onPress={() => {setIsFormVisible(true)}}>
-                                    <FontAwesome5 name="edit" size={28} color="purple"/>
-                                </TouchableOpacity>
-                                <TouchableOpacity style={{
-                                    flex: 1,
-                                }} onPress={()=>{handleDelete(task)}}>
-                                    <FontAwesome5 name="trash-alt" size={28} color="red"/>
-                                </TouchableOpacity>
-                            </View>
+                            <TouchableOpacity style={{
+                                flex: 1,
+                            }} onPress={()=>{handleDelete(task)}}>
+                                <FontAwesome5 name="trash-alt" size={28} color="red"/>
+                            </TouchableOpacity>
                         </View>
-                        
+                    </View>
+                    
+                    <View style={{
+                        flexDirection: "row",
+                    }}>
+                        <View style={{
+                            flex: 1,
+                            flexDirection: "row",
+                            alignItems: "center",
+                            paddingVertical: 10
+                        }}>
+                            <Text style={{
+                                fontSize: 15,
+                                fontWeight: '500',
+                                paddingRight: 10,
+                            }}>Assigned to:</Text>
+                            <Avatar 
+                                size={32}
+                                rounded
+                                source={{ uri: task.uri }}
+                            />
+                            <Text style={{
+                                paddingHorizontal: 5,
+                                fontWeight: "400"
+                            }}>
+                                {task.assignedTo}
+                            </Text>
+                        </View>
                         <View style={{
                             flexDirection: "row",
+                            flex: 1,
+                            alignItems: "center"
                         }}>
+                            {due}
+                        </View>
+                    </View>
+                    <View style={{
+                        flexDirection: "row",
+                        height: 85
+                    }}>
+                        <View style={{
+                            flex: 1,
+                            width: '65%',
+                            // height: '50%'
+                        }}>
+                            <Text style={{
+                                fontWeight: '500',
+                                fontSize: 15,
+                            }}>Description: </Text>
+                            <Text style={{
+                                fontWeight: '200',
+                            }}>{task.description}</Text>
+                        </View>
+                        <View style={{
+                            flex: 1,
+                            flexDirection: "column"
+                        }}> 
                             <View style={{
-                                flex: 1,
                                 flexDirection: "row",
-                                alignItems: "center",
-                                paddingVertical: 10
-                            }}>
-                                <Text style={{
-                                    fontSize: 15,
-                                    fontWeight: '500',
-                                    paddingRight: 10,
-                                }}>Assigned to:</Text>
-                                <Avatar 
-                                    size={32}
-                                    rounded
-                                    source={{ uri: task.uri }}
-                                />
-                                <Text style={{
-                                    paddingHorizontal: 5,
-                                    fontWeight: "400"
-                                }}>
-                                    {task.assignedTo}
-                                </Text>
-                            </View>
-                            <View style={{
-                                flexDirection: "row",
-                                flex: 1,
+                                justifyContent: 'center',
                                 alignItems: "center"
                             }}>
-                                {due}
-                            </View>
-                        </View>
-                        <View style={{
-                            flexDirection: "row",
-                            height: 85
-                        }}>
-                            <View style={{
-                                flex: 1,
-                                width: '65%',
-                                // height: '50%'
-                            }}>
-                                <Text style={{
-                                    fontWeight: '500',
-                                    fontSize: 15,
-                                }}>Description: </Text>
-                                <Text style={{
-                                    fontWeight: '200',
-                                }}>{task.description}</Text>
-                            </View>
-                            <View style={{
-                                flex: 1,
-                                flexDirection: "column"
-                            }}> 
-                                <View style={{
-                                    flexDirection: "row",
-                                    justifyContent: 'center',
-                                    alignItems: "center"
-                                }}>
-                                    <Feather name="repeat" size={20} color="black" 
-                                        style={{
-                                            paddingRight: 10
-                                        }}
-                                    />
-                                    
-                                    <Text>{task.repeat}</Text>
-                                </View>
+                                <Feather name="repeat" size={20} color="black" 
+                                    style={{
+                                        paddingRight: 10
+                                    }}
+                                />
                                 
-                                <View style={{
-                                    flex: 1,
-                                    flexDirection: "row",
-                                    alignItems: 'flex-end',
-                                }}>
-                                    <View style={{
-                                        flex: 1,
-                                        flexDirection: "row-reverse",
-                                    }}>
-                                        <Text style={{
-                                            fontSize: 15,
-                                            fontWeight: '400',
-                                            paddingLeft: 5,
-                                            
-                                        }}>{task.points}</Text>
-                                        <Image source={require('../screens/Shop/nut.png')}
-                                            style={{
-                                                height: 20,
-                                                width: 20
-                                            }}
-                                        ></Image>
-                                    </View>
-                                </View>
+                                <Text>{task.repeat}</Text>
                             </View>
                             
+                            <View style={{
+                                flex: 1,
+                                flexDirection: "row",
+                                alignItems: 'flex-end',
+                            }}>
+                                <View style={{
+                                    flex: 1,
+                                    flexDirection: "row-reverse",
+                                }}>
+                                    <Text style={{
+                                        fontSize: 15,
+                                        fontWeight: '400',
+                                        paddingLeft: 5,
+                                        
+                                    }}>{task.points}</Text>
+                                    <Image source={require('../screens/Shop/nut.png')}
+                                        style={{
+                                            height: 20,
+                                            width: 20
+                                        }}
+                                    ></Image>
+                                </View>
+                            </View>
                         </View>
                         
-                    </View>   
-                </TouchableOpacity>
-            </>
+                    </View>
+                    
+                </View>   
+            </View>
         );
     }
 }

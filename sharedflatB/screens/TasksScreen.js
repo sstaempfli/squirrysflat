@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, Text, Dimensions, Alert, Modal } from "react-native";
+import { FlatList, View, Text, Dimensions, Alert, Modal } from "react-native";
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import TaskCard from "../components/TaskCard";
 import BackCard from "../components/BackCard";
@@ -76,19 +76,25 @@ export default function TasksScreen() {
         fontWeight: '100',
         paddingTop: 20
       }}>Long Press on task for detailed view</Text>
-      <SwipeListView
+      <FlatList
           style={{
             paddingVertical: 20,
             paddingHorizontal: 10,
           }}
           data={sortedTasks}
-          renderItem={ (data, rowMap) => {
+          renderItem={ (data) => {
+            let rowRef = null;
+
             return (
               <SwipeRow
                 leftOpenValue={Dimensions.get('window').width}
                 rightOpenValue={-(Dimensions.get('window').width/3.2)}
                 disableRightSwipe={true}
                 disableLeftSwipe={true}
+                ref={(ref) => rowRef = ref}
+                onRowPress={() => {
+                  activeRow != data.item.id ? setActiveRow(data.item.id) : setActiveRow(-1)
+                }}
               >
                 <BackCard task={ data.item }/>
                 <TaskCard

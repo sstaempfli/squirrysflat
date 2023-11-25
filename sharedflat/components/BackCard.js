@@ -67,20 +67,19 @@ export default function BackCard({ task }){
         }})
     };
     return (
-        <>
-        <Modal
+        <View style={styles.rowBack}>
+            <Modal
             animationType="slide"
             transparent={true}
             visible={isFormVisible}
             // onRequestClose={() => setIsFormVisible(false)}
             >
-            <FormComponent
-            initialData={task}
-            onSubmit={handleSubmitForm}
-            onClose={handleCloseForm} 
-            />
-        </Modal>
-        <View style={styles.rowBack}>
+                <FormComponent
+                initialData={task}
+                onSubmit={handleSubmitForm}
+                onClose={handleCloseForm} 
+                />
+            </Modal>
             <View style={{
                 flex: 2,
                 paddingLeft: 10,
@@ -113,7 +112,6 @@ export default function BackCard({ task }){
                 </View>
             </View>
         </View>
-        </>
     )
 }
 

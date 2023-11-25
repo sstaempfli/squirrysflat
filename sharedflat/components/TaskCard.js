@@ -68,9 +68,9 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
     const due = simplifyDate(task.due)
     if(task.id != activeRow){
         return (
-            <TouchableOpacity
-                onLongPress={() => setActiveRow(task.id)}
-                activeOpacity={1}
+            <View
+                // onLongPress={() => setActiveRow(task.id)}
+                // activeOpacity={1}
                 style={styles.card}
             >
                 <View style={{
@@ -106,15 +106,15 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                     </View>
                 </View>
                 
-            </TouchableOpacity>
+            </View>
         )
     }
     else{
         return (
-            <TouchableOpacity
-                onLongPress={() => setActiveRow(-1)}
+            <View
+                // onLongPress={() => setActiveRow(-1)}
                 style={styles.bigger}
-                activeOpacity={1}
+                // activeOpacity={1}
             >  
                 <View style={styles.container}>
                     <Text style={{
@@ -219,7 +219,7 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                     </View>
                     
                 </View>   
-            </TouchableOpacity>
+            </View>
         );
     }
 }
