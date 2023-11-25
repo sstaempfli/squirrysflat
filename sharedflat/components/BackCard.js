@@ -13,58 +13,72 @@ export default function BackCard({ task }){
    // const [ editModalVisible, setEditModal ] = useState(false); i switched it to isFormVisible
 
     const [isFormVisible, setIsFormVisible] = useState(false);
-    const [formMode, setFormMode] = useState('edit'); // 'create' or 'edit'
-    const [initialData, setInitialData] = useState({}); // Data for editing
+    // const [formMode, setFormMode] = useState('edit'); // 'create' or 'edit'
+    // const [initialData, setInitialData] = useState({}); // Data for editing
     
-    const dummyInitialData = {
-        title: 'Grocery Shopping',
-        subtasks: ['Buy milk', 'Buy bread', 'Get apples'],
-        dueDate: '2023-04-15',
-        repeat: 'Weekly',
-        assignTo: 'Self',
-        priority: 5,
-      };
-    const handleOpenForm = (mode, data = {}) => {
-        setFormMode(mode);
-        setInitialData(data);
-        setIsFormVisible(true);
-      };
+    // const dummyInitialData = {
+    //     title: 'Grocery Shopping',
+    //     subtasks: ['Buy milk', 'Buy bread', 'Get apples'],
+    //     dueDate: '2023-04-15',
+    //     repeat: 'Weekly',
+    //     assignTo: 'Self',
+    //     priority: 5,
+    //   };
+    // const handleOpenForm = (mode, data = {}) => {
+    //     setFormMode(mode);
+    //     setInitialData(data);
+    //     setIsFormVisible(true);
+    // };
     
-      const handleEditTask = () => {
-        handleOpenForm('edit', dummyInitialData);
-      };
-      const handleCloseForm = () => {
-        // Logic to close the form
+    // const handleEditTask = () => {
+    //     // handleOpenForm('edit', dummyInitialData);
+    // };
+
+    const handleCloseForm = () => {
+    // Logic to close the form
         setIsFormVisible(false);
-      };
-    
-      const handleSubmitForm = (formData) => {
-        // Handle form submission logic here
+    };
+
+    const handleSubmitForm = (formData) => {
+    // Handle form submission logic here
+        let uri
+        switch(formData.assignedTo){
+        case 'Lino':
+            uri = "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+            break
+        case 'Lara':
+            uri = "https://discoverymood.com/wp-content/uploads/2020/04/Mental-Strong-Women-min.jpg"
+            break
+        case "Sara":
+            uri = "https://imageio.forbes.com/specials-images/imageserve/64e8c95bf02f344e0cd8ae1f/Former-President-Donald-Trump-Surrenders-To-Fulton-County-Jail-In-Election-Case/0x0.jpg?crop=1500,1120,x0,y185,safe&height=530&width=711&fit=bounds"
+            break
+        case "You":
+            uri = "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
+            break
+        default: 
+            uri = "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
+        }
         setIsFormVisible(false);
-      };
+        dispatch({type: 'change', task: {
+            ...formData,
+            id: task.id,
+            uri: uri,
+            key: String(task.id)
+        }})
+    };
     return (
         <>
         <Modal
             animationType="slide"
             transparent={true}
             visible={isFormVisible}
-            onRequestClose={() => setIsFormVisible(false)}
+            // onRequestClose={() => setIsFormVisible(false)}
             >
-            <View style={styles.centeredView}>
-                <View style={styles.modalView}>
-                     <FormComponent
-                        initialData={initialData}
-                        onSubmit={handleSubmitForm}
-                        mode={formMode}
-                        onClose={handleCloseForm} 
-                    />
-                    {/*<Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setIsFormVisible(false)}>
-                    <Text style={styles.textStyle}>Hide Modal</Text>
-    </Pressable>   Don't neeed it there is a cancel button */} 
-                </View>
-            </View>
+            <FormComponent
+            initialData={task}
+            onSubmit={handleSubmitForm}
+            onClose={handleCloseForm} 
+            />
         </Modal>
         <View style={styles.rowBack}>
             <View style={{
@@ -82,7 +96,7 @@ export default function BackCard({ task }){
                 }}>Complete</Text>
             </View>
             <View style={ styles.editDeleteCont }>
-                <TouchableOpacity style={ styles.editCont } onPress={handleEditTask}>
+                <TouchableOpacity style={ styles.editCont } onPress={() => setIsFormVisible(true)}>
                     <View >
                         <FontAwesome5 name="edit" size={28} color="white"/>
                     </View >
@@ -139,29 +153,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         overflow: 'hidden'
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 22,
-      },
-    modalView: {
-        margin: 20,
-        width: '80%',
-        height: '50%',
-        backgroundColor: 'white',
-        borderRadius: 20,
-        padding: 20,
-        alignItems: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
     },
     button: {
         borderRadius: 20,

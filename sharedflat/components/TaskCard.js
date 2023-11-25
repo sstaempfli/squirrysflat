@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Avatar, Badge, Icon, withBadge, CheckBox } from '@rneui/themed';
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { Feather } from '@expo/vector-icons'; 
+
 
 const formatDate = (dateString) => {
     const options = { month: 'short', day: 'numeric' };
@@ -42,17 +43,23 @@ function simplifyDate(date){
     }
     return (
         <View style={{
-            // flex:1,
-            flexDirection: 'row',
-            // justifyContent: "center",
-            alignItems: "center",
+            flex: 3,
+            flexDirection: 'row-reverse',
+            justifyContent: "center",
+            alignItems: "flex-start",
         }}>
-            <Badge status={ badge } />
-            <Text style={{
-                paddingLeft: 5
-            }}> 
-                Due { txt }
-            </Text>
+            <View style={{
+                flexDirection: "row-reverse",
+                alignItems: "center"
+            }}>
+                <Badge status={ badge } />
+                <Text style={{
+                    paddingRight: 5
+                }}> 
+                    Due { txt }
+                </Text>
+            </View>
+            
         </View>
     )
 }
@@ -71,11 +78,11 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                     flexDirection: "row",
                 }}>
                     <View style={styles.container}>
-                        <View>
-                        </View>
                         <Text style={{
+                            flex: 1,
                             fontSize: 18,
-                            fontWeight: 'bold'
+                            fontWeight: 'bold',
+                            paddingBottom: 5
                         }}>{task.name}</Text>
                         { due }
                     </View>
@@ -143,46 +150,74 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                         </View>
                         <View style={{
                             flexDirection: "row",
-                            flex: 1
+                            flex: 1,
+                            alignItems: "center"
                         }}>
                             {due}
                         </View>
                     </View>
-                        
-                    <View>
-                        <Text style={{
-                            fontWeight: '500',
-                            fontSize: 15,
-                        }}>Description: </Text>
-                        <Text style={{
-                            fontWeight: '200'
-                        }}>{task.description}</Text>
-                    </View>
                     <View style={{
                         flexDirection: "row",
-                        paddingTop: 5,
+                        height: 85
                     }}>
-                        <View style={{flex: 1}} />
                         <View style={{
                             flex: 1,
-                            flexDirection: "row-reverse",
+                            width: '65%',
+                            // height: '50%'
                         }}>
                             <Text style={{
+                                fontWeight: '500',
                                 fontSize: 15,
-                                fontWeight: '400',
-                                paddingLeft: 5,
+                            }}>Description: </Text>
+                            <Text style={{
+                                fontWeight: '200',
+                            }}>{task.description}</Text>
+                        </View>
+                        <View style={{
+                            flex: 1,
+                            flexDirection: "column"
+                        }}> 
+                            <View style={{
+                                flexDirection: "row",
+                                justifyContent: 'center',
+                                alignItems: "center"
+                            }}>
+                                <Feather name="repeat" size={20} color="black" 
+                                    style={{
+                                        paddingRight: 10
+                                    }}
+                                />
                                 
-                            }}>{task.points}</Text>
-                            <Image source={require('../screens/Shop/nut.png')}
-                                style={{
-                                    height: 20,
-                                    width: 20
-                                }}
-                            ></Image>
+                                <Text>{task.repeat}</Text>
+                            </View>
+                            
+                            <View style={{
+                                flex: 1,
+                                flexDirection: "row",
+                                alignItems: 'flex-end',
+                            }}>
+                                <View style={{
+                                    flex: 1,
+                                    flexDirection: "row-reverse",
+                                }}>
+                                    <Text style={{
+                                        fontSize: 15,
+                                        fontWeight: '400',
+                                        paddingLeft: 5,
+                                        
+                                    }}>{task.points}</Text>
+                                    <Image source={require('../screens/Shop/nut.png')}
+                                        style={{
+                                            height: 20,
+                                            width: 20
+                                        }}
+                                    ></Image>
+                                </View>
+                            </View>
                         </View>
                         
-                        
                     </View>
+                    
                 </View>   
             </TouchableOpacity>
         );
@@ -205,7 +240,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        alignItems: 'left',
+        alignItems: 'flex-start',
         padding: 10,
     },
   })

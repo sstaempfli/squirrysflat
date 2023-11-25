@@ -49,11 +49,15 @@ function tasksReducer(tasks, action) {
   switch (action.type) {
     case 'add': {
       return [...tasks, {
-        id: action.id,
-        name: action.name,
-        assignedTo: action.assignedTo,
-        description: action.text,
-        due: action.due,
+        key: action.task.key,
+        uri: action.task.uri,
+        points: action.task.points,
+        repeat: action.task.repeat,
+        id: action.task.id,
+        name: action.task.name,
+        assignedTo: action.task.assignedTo,
+        description: action.task.text,
+        due: action.task.due,
       }];
     }
     case 'change': {
@@ -82,33 +86,36 @@ anotherDay.setDate(anotherDay.getDate() + 5);
 
 let initialTasks = [
   {
-      key: '1',
-      id: 1, 
-      name: 'Vaccum', 
-      description: "Very cool task", 
-      assignedTo: "Lino",
-      due: today,
-      points: 2,
-      uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
-  },
-  {
-      key: '2',
-      id: 2,
-      name: 'Wash Dishes',
-      description: "Very cool task",
-      assignedTo: "Lino",
-      due: new Date(tomorrow),
-      points: 2,
-      uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+    key: '1',
+    id: 1, 
+    name: 'Vaccum', 
+    description: "Very cool task", 
+    assignedTo: "Lino",
+    due: today,
+    points: 2,
+    repeat: "Weekly",
+    uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
   },
   { 
-      key: '3',
-      id: 3,
-      name: 'Cook for friends', 
-      description: "Very cool task",
-      assignedTo: "You",
-      due: new Date(anotherDay),
-      points: 4,
-      uri: "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
-  }
+    key: '3',
+    id: 3,
+    name: 'Cook for friends', 
+    description: "Very cool task",
+    assignedTo: "You",
+    repeat: "Never",
+    due: new Date(anotherDay),
+    points: 4,
+    uri: "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
+  },
+  {
+    key: '2',
+    id: 2,
+    name: 'Wash Dishes',
+    description: "Very cool task",
+    assignedTo: "Lino",
+    due: new Date(tomorrow),
+    points: 2,
+    repeat: "Daily",
+    uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+  },
 ];
