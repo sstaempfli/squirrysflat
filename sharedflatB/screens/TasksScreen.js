@@ -71,11 +71,6 @@ export default function TasksScreen() {
             onClose={() => setIsFormVisible(false)} 
           />
       </Modal>
-      <Text style={{
-        alignSelf: "center",
-        fontWeight: '100',
-        paddingTop: 20
-      }}>Long Press on task for detailed view</Text>
       <FlatList
           style={{
             paddingVertical: 20,
