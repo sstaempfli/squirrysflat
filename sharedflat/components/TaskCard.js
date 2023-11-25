@@ -43,7 +43,7 @@ function simplifyDate(date){
     }
     return (
         <View style={{
-            flex: 3,
+            flex: 2,
             flexDirection: 'row-reverse',
             justifyContent: "center",
             alignItems: "flex-start",

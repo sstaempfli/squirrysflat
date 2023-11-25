@@ -48,33 +48,6 @@ export default function TasksScreen() {
       key: String(currentId)}})
   }
 
-  function completeTask(task, event, rowMap){
-    if(event.value > Dimensions.get('window').width){
-      if(bool && task.assignedTo != "You"){
-        setBool(false)
-        rowMap[task.key].closeRow()
-        Alert.alert("Whoopsy", "Are you really completing someone else's task? Are you sure you want to steal his nuts?", [
-          {
-            text: 'Cancel',
-            onPress: () => {
-              setBool(true)
-            },
-            style: 'cancel',
-          },
-          {text: 'Yes, stinky flatmate', onPress: () => {
-            dispatch({type: 'delete', id: task.id})
-            setMyNuts(myNuts + task.points)
-            setBool(true)
-          }}])
-      }
-      else if(task.assignedTo == "You"){
-        dispatch({type: 'delete', id: task.id})
-        setMyNuts(myNuts + task.points)
-      }
-      setActiveRow(activeRow - 1)
-    }
-  }
-
   return (
     <>
       <Modal
@@ -102,7 +75,7 @@ export default function TasksScreen() {
         alignSelf: "center",
         fontWeight: '100',
         paddingTop: 20
-      }}>Swipe right to complete</Text>
+      }}>Long Press on task for detailed view</Text>
       <SwipeListView
           style={{
             paddingVertical: 20,
@@ -114,9 +87,8 @@ export default function TasksScreen() {
               <SwipeRow
                 leftOpenValue={Dimensions.get('window').width}
                 rightOpenValue={-(Dimensions.get('window').width/3.2)}
-                // disableRightSwipe={true}
-                // disableLeftSwipe={true}
-                onSwipeValueChange={(event) => completeTask(data.item, event, rowMap)}
+                disableRightSwipe={true}
+                disableLeftSwipe={true}
               >
                 <BackCard task={ data.item }/>
                 <TaskCard
