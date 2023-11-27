@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FlatList, View, Text, Dimensions, Alert, Modal } from "react-native";
+import { Image, FlatList, View, Text, Dimensions, Alert, Modal } from "react-native";
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import TaskCard from "../components/TaskCard";
 import BackCard from "../components/BackCard";
@@ -71,6 +71,36 @@ export default function TasksScreen() {
             onClose={() => setIsFormVisible(false)} 
           />
       </Modal>
+      <View style={{
+        flexDirection:'row',
+        padding: 10,
+        alignItems: "center",
+        justifyContent: "flex-end",
+      }}>
+        <View style={{
+          backgroundColor: 'white',
+          height: 30,
+          width: 80,
+          paddingRight: 10,
+          shadowOpacity: 1,
+          shadowColor: 'grey',
+          shadowRadius: 3,
+          shadowOffset: 0,
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: 10,
+          flexDirection: "row",
+        }}>
+          <Image source={require('../assets/nut.png')} style={{
+            height: 20,
+            width: 20,
+          }}/>
+          <Text style={{
+            fontWeight: 'bold'
+          }}> {myNuts}</Text>
+        </View>
+      </View>
+      
       <FlatList
           style={{
             paddingVertical: 20,
