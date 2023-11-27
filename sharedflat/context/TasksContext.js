@@ -56,7 +56,7 @@ function tasksReducer(tasks, action) {
         id: action.task.id,
         name: action.task.name,
         assignedTo: action.task.assignedTo,
-        description: action.task.text,
+        description: action.task.description,
         due: action.task.due,
       }];
     }
