@@ -48,33 +48,6 @@ export default function TasksScreen() {
       key: String(currentId)}})
   }
 
-  function completeTask(task, event, rowRef){
-    if(event.value > Dimensions.get('window').width){
-      if(bool && task.assignedTo != "You"){
-        setBool(false)
-        rowRef.closeRow()
-        Alert.alert("Whoopsy", "Are you really completing someone else's task? Are you sure you want to steal his nuts?", [
-          {
-            text: 'Cancel',
-            onPress: () => {
-              setBool(true)
-            },
-            style: 'cancel',
-          },
-          {text: 'Yes, stinky flatmate', onPress: () => {
-            dispatch({type: 'delete', id: task.id})
-            setMyNuts(myNuts + task.points)
-            setBool(true)
-          }}])
-      }
-      else if(task.assignedTo == "You"){
-        dispatch({type: 'delete', id: task.id})
-        setMyNuts(myNuts + task.points)
-      }
-      setActiveRow(activeRow - 1)
-    }
-  }
-
   return (
     <>
       <Modal
@@ -98,30 +71,25 @@ export default function TasksScreen() {
             onClose={() => setIsFormVisible(false)} 
           />
       </Modal>
-      <Text style={{
-        alignSelf: "center",
-        fontWeight: '100',
-        paddingTop: 20
-      }}>Swipe right to complete</Text>
       <FlatList
           style={{
             paddingVertical: 20,
             paddingHorizontal: 10,
           }}
           data={sortedTasks}
-          renderItem={ (data, rowMap) => {
+          renderItem={ (data) => {
             let rowRef = null;
+
             return (
               <SwipeRow
                 leftOpenValue={Dimensions.get('window').width}
                 rightOpenValue={-(Dimensions.get('window').width/3.2)}
-                // disableRightSwipe={true}
-                // disableLeftSwipe={true}
+                disableRightSwipe={true}
+                disableLeftSwipe={true}
                 ref={(ref) => rowRef = ref}
                 onRowPress={() => {
                   activeRow != data.item.id ? setActiveRow(data.item.id) : setActiveRow(-1)
                 }}
-                onSwipeValueChange={(event) => completeTask(data.item, event, rowRef)}
               >
                 <BackCard task={ data.item }/>
                 <TaskCard
@@ -132,6 +100,7 @@ export default function TasksScreen() {
               </SwipeRow>
             )
           }}
+
       />
       <AddButton handlePress={() => setIsFormVisible(true)}/>
     </>

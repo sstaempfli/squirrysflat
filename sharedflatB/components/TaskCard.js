@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { Alert, Modal, View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Avatar, Badge, Icon, withBadge, CheckBox } from '@rneui/themed';
 import { Feather } from '@expo/vector-icons'; 
-
+import { Octicons } from '@expo/vector-icons'; 
+import { FontAwesome5 } from '@expo/vector-icons';
+import FormComponent from "./FormComponent";
+import { useTasksDispatch, useMyNuts, useSetMyNuts } from "../context/TasksContext";
 
 const formatDate = (dateString) => {
     const options = { month: 'short', day: 'numeric' };
@@ -66,11 +69,72 @@ function simplifyDate(date){
 
 export default function TaskCard({ task, activeRow, setActiveRow }) {
     const due = simplifyDate(task.due)
+    const dispatch = useTasksDispatch();
+    const myNuts = useMyNuts();
+    const setMyNuts = useSetMyNuts();
+    const [isFormVisible, setIsFormVisible] = useState(false);
+
+
+    const handleCloseForm = () => {
+    // Logic to close the form
+        setIsFormVisible(false);
+    };
+    
+    function handleComplete(task) {
+        if(task.assignedTo != "You"){
+            Alert.alert("Whoopsy", "Are you really completing someone else's task? Are you sure you want to steal his nuts?", [
+            {
+                text: 'Cancel',
+                onPress: () => {
+                setBool(true)
+                },
+                style: 'cancel',
+            },
+            {text: 'Yes, stinky flatmate', onPress: () => {
+                dispatch({type: 'delete', id: task.id})
+                setMyNuts(myNuts + task.points)
+            }}])
+        }
+        else if(task.assignedTo == "You"){
+            dispatch({type: 'delete', id: task.id})
+            setMyNuts(myNuts + task.points)
+        }
+    }
+    const handleDelete = (task) => {
+        dispatch({ type: 'delete', id: task.id})
+    }
+
+    function handleSubmitForm(formData) {
+    // Handle form submission logic here
+        let uri
+        switch(formData.assignedTo){
+        case 'Lino':
+            uri = "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+            break
+        case 'Lara':
+            uri = "https://discoverymood.com/wp-content/uploads/2020/04/Mental-Strong-Women-min.jpg"
+            break
+        case "Sara":
+            uri = "https://imageio.forbes.com/specials-images/imageserve/64e8c95bf02f344e0cd8ae1f/Former-President-Donald-Trump-Surrenders-To-Fulton-County-Jail-In-Election-Case/0x0.jpg?crop=1500,1120,x0,y185,safe&height=530&width=711&fit=bounds"
+            break
+        case "You":
+            uri = "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
+            break
+        default: 
+            uri = "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
+        }
+        setIsFormVisible(false);
+        dispatch({type: 'change', task: {
+            ...formData,
+            id: task.id,
+            uri: uri,
+            key: String(task.id)
+        }})
+    };
+
     if(task.id != activeRow){
         return (
             <View
-                // onLongPress={() => setActiveRow(task.id)}
-                // activeOpacity={1}
                 style={styles.card}
             >
                 <View style={{
@@ -112,16 +176,54 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
     else{
         return (
             <View
-                // onLongPress={() => setActiveRow(-1)}
                 style={styles.bigger}
-                // activeOpacity={1}
             >  
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={isFormVisible}
+                    >
+                    <FormComponent
+                    initialData={task}
+                    onSubmit={handleSubmitForm}
+                    onClose={handleCloseForm} 
+                    />
+                </Modal>
                 <View style={styles.container}>
-                    <Text style={{
-                        alignSelf: "center",
-                        fontWeight: '500',
-                        fontSize: 30
-                    }}>{task.name}</Text>
+                    <View style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between"
+                    }}>
+                        <TouchableOpacity style={{
+                            flex: 1
+                        }} onPress={() => {handleComplete(task)}}>
+                            <Octicons name="tasklist" size={28} color="purple"/>
+                        </TouchableOpacity>
+                        <Text numberOfLines={1} style={{
+                            flex: 3,
+                            alignSelf: "center",
+                            fontWeight: '500',
+                            fontSize: 25
+                        }}>{task.name}</Text>
+                        <View style={{
+                            flex: 1.5,
+                            flexDirection: "row",
+                            paddingLeft: '5%',
+                        }}>
+                            <TouchableOpacity style={{
+                                flex: 1
+                            }} onPress={() => {setIsFormVisible(true)}}>
+                                <FontAwesome5 name="edit" size={28} color="purple"/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={{
+                                flex: 1,
+                            }} onPress={()=>{handleDelete(task)}}>
+                                <FontAwesome5 name="trash-alt" size={28} color="red"/>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    
                     <View style={{
                         flexDirection: "row",
                     }}>
