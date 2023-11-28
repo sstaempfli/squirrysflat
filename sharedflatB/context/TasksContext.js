@@ -94,7 +94,7 @@ let initialTasks = [
     due: today,
     points: 2,
     repeat: "Weekly",
-    uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+    uri: "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
   },
   { 
     key: '3',
@@ -105,28 +105,28 @@ let initialTasks = [
     repeat: "Never",
     due: new Date(anotherDay),
     points: 4,
-    uri: "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
+    uri: "https://discoverymood.com/wp-content/uploads/2020/04/Mental-Strong-Women-min.jpg"
   },
   {
     key: '2',
     id: 2,
     name: 'Wash Dishes',
     description: "put the plates in the dishwasher except for Sara’s special plates with the frogs on it 🐸",
-    assignedTo: "Sara",
+    assignedTo: "You",
     due: new Date(tomorrow),
     points: 2,
     repeat: "Daily",
-    uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
+    uri: "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
   },
   {
     key: '100',
     id: 100,
     name: 'Clean Bathroom',
     description: "clean the sink, toilet, floor and the bathtub it’s DISGUSTING!",
-    assignedTo: "Lara",
+    assignedTo: "Lino",
     due: new Date(anotherDay),
     points: 4,
     repeat: "Weekly",
-    uri: "https://discoverymood.com/wp-content/uploads/2020/04/Mental-Strong-Women-min.jpg"
+    uri: "https://t4.ftcdn.net/jpg/02/45/56/35/360_F_245563558_XH9Pe5LJI2kr7VQuzQKAjAbz9PAyejG1.jpg"
   },
 ];
