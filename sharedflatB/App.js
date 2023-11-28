@@ -9,6 +9,7 @@ import FinanceScreen from './screens/FinanceScreen';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TasksProvider } from './context/TasksContext';
+import { View } from 'react-native';
 
 
 const Stack = createStackNavigator();
@@ -56,6 +57,29 @@ export default function App() {
               }
               return <FontAwesome5 name={iconName} color={color} size={size} />;
             },
+            headerRight: () => (
+              <View style={{ flexDirection: 'row', marginRight: 10 }}>
+                <FontAwesome
+                  name="user"
+                  size={24}
+                  color="black"
+                  style={{ marginRight: 15 }}
+                  onPress={() => {
+                    // Navigate to user settings screen
+                    navigation.navigate('UserSettings');
+                  }}
+                />
+                <FontAwesome
+                  name="cog"
+                  size={24}
+                  color="black"
+                  onPress={() => {
+                    // Navigate to app settings screen
+                    navigation.navigate('AppSettings');
+                  }}
+                />
+              </View>
+            ),
             tabBarActiveTintColor: 'tomato',
             tabBarInactiveTintColor: 'gray',
             tabBarActiveTintColor: "purple",
