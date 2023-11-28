@@ -66,7 +66,7 @@ export default function App() {
                   style={{ marginRight: 15 }}
                   onPress={() => {
                     // Navigate to user settings screen
-                    navigation.navigate('UserSettings');
+                    // navigation.navigate('UserSettings');
                   }}
                 />
                 <FontAwesome
@@ -75,7 +75,7 @@ export default function App() {
                   color="black"
                   onPress={() => {
                     // Navigate to app settings screen
-                    navigation.navigate('AppSettings');
+                    // navigation.navigate('AppSettings');
                   }}
                 />
               </View>
