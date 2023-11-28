@@ -96,7 +96,7 @@ export default function TasksScreen() {
             width: 20,
           }}/>
           <Text style={{
-            fontWeight: 'bold'
+            fontWeight: 'bold',
           }}> {myNuts}</Text>
         </View>
       </View>

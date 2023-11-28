@@ -4,6 +4,21 @@ const TasksContext = createContext(null);
 
 const TasksDispatchContext = createContext(null);
 
+const PurchasedItemsContext = createContext({});
+const SetPurchasedItemsContext = createContext(() => {});
+const HappinessContext = createContext(0);
+const SetHappinessContext = createContext(() => {});
+
+// Add hooks for your purchased items
+export function usePurchasedItems() {
+  return useContext(PurchasedItemsContext);
+}
+
+export function useSetPurchasedItems() {
+  return useContext(SetPurchasedItemsContext);
+}
+
+
 const NutsContext = createContext(null)
 const setNutsContext = createContext(null)
 
@@ -12,11 +27,18 @@ export function TasksProvider({ children }) {
     tasksReducer,
     initialTasks
   );
+  const [purchasedItems, setPurchasedItems] = useState('');
 
   const [ myNuts, setMyNuts ] = useState(100)
+  const [happiness, setHappiness] = useState(40); // Initial happiness level
+  
 
   return (
-    <NutsContext.Provider value={myNuts}>
+    <HappinessContext.Provider value={happiness}>
+      <SetHappinessContext.Provider value={setHappiness}>
+          <PurchasedItemsContext.Provider value={purchasedItems}>
+      <SetPurchasedItemsContext.Provider value={setPurchasedItems}>
+      <NutsContext.Provider value={myNuts}>
       <setNutsContext.Provider value={setMyNuts}>
         <TasksContext.Provider value={tasks}>
           <TasksDispatchContext.Provider value={dispatch}>
@@ -25,8 +47,19 @@ export function TasksProvider({ children }) {
         </TasksContext.Provider>
       </setNutsContext.Provider>
     </NutsContext.Provider>
+      </SetPurchasedItemsContext.Provider>
+    </PurchasedItemsContext.Provider> 
+      </SetHappinessContext.Provider>
+    </HappinessContext.Provider>
     
   );
+}
+export function useHappiness() {
+  return useContext(HappinessContext);
+}
+
+export function useSetHappiness() {
+  return useContext(SetHappinessContext);
 }
 
 export function useTasks() {
