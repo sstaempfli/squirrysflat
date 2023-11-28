@@ -86,7 +86,6 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
             {
                 text: 'Cancel',
                 onPress: () => {
-                setBool(true)
                 },
                 style: 'cancel',
             },
