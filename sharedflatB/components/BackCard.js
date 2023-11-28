@@ -9,7 +9,6 @@ import FormComponent from './FormComponent';
 
 export default function BackCard({ task }){
     const dispatch = useTasksDispatch();
-    const tasks = useTasks();
    // const [ editModalVisible, setEditModal ] = useState(false); i switched it to isFormVisible
 
     const [isFormVisible, setIsFormVisible] = useState(false);
@@ -66,14 +65,14 @@ export default function BackCard({ task }){
             key: String(task.id)
         }})
     };
-    return (
+    return (        
         <View style={styles.rowBack}>
             <Modal
-            animationType="slide"
-            transparent={true}
-            visible={isFormVisible}
-            // onRequestClose={() => setIsFormVisible(false)}
-            >
+                animationType="slide"
+                transparent={true}
+                visible={isFormVisible}
+                // onRequestClose={() => setIsFormVisible(false)}
+                >
                 <FormComponent
                 initialData={task}
                 onSubmit={handleSubmitForm}
