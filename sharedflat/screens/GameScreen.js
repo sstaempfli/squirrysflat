@@ -8,25 +8,32 @@ const GameScreen = () => {
   const nuts = useMyNuts(); // Use the current nuts value
   const setMyNuts = useSetMyNuts(); // Use the setter function to update nuts
   const purchasedItems = usePurchasedItems(); // Use the purchased items
-  const setPurchasedItems = useSetPurchasedItems(); // Use the setter function to update purchased items
-  const getSquirrelImage = () => {
-    // Logic to determine which image to show based on purchased items
-    if (purchasedItems['1']) {
-      return require('../screens/You/perfume_you.png');
-    } else if (purchasedItems['2']) {
-      return require('../screens/You/clean_you.png');
-    } else if (purchasedItems['3']) {
-      return require('../screens/You/haircut_you.png');
-    } else if (purchasedItems['4']) {
-      return require('../screens/You/hci_you.png');
-    } else if (purchasedItems['5']) {
-      return require('../screens/You/dress_you.png');
-    } else if (purchasedItems['6']) {
-      return require('../screens/You/crown_you.png');
-    } 
-    // Default image
-    return require('../screens/Squirrels/you.png');
-  };
+  const setPurchasedItems = useSetPurchasedItems();
+  function getSquirrelImage(purchasedItems) {
+    if (purchasedItems.length === 0) {
+      // Default image when no purchased items
+      return require('../screens/Squirrels/you.png');
+    }
+    const lastPurchasedItemId = purchasedItems[purchasedItems.length - 1];
+    // Map the last purchased item ID to the corresponding image
+    switch (lastPurchasedItemId) {
+      case '1':
+        return require('../screens/You/perfume_you.png');
+      case '2':
+        return require('../screens/You/clean_you.png');
+      case '3':
+        return require('../screens/You/haircut_you.png');
+      case '4':
+        return require('../screens/You/hci_you.png');
+      case '5':
+        return require('../screens/You/dress_you.png');
+      case '6':
+        return require('../screens/You/crown_you.png');
+      default:
+        // Default image when the last purchased item is not recognized
+        return require('../screens/Squirrels/you.png');
+    }
+  }
   const renderContent = () => {
     switch (activeTab) {
       case 'ranking':
@@ -40,7 +47,7 @@ const GameScreen = () => {
     }
   };
 const squirrelHappiness= useHappiness();
-const you = getSquirrelImage();
+const you = getSquirrelImage(purchasedItems);
 const SetHappiness= useSetHappiness();
 // Example data for the character images
 const characters = [
@@ -123,13 +130,10 @@ const ShopView = () => {
     setModalVisible(true);
   };
 
-    const handlePurchase = () => {
-      if (nuts >= selectedItem.price) {
-        setMyNuts((currentNuts) => currentNuts - selectedItem.price);
-        setPurchasedItems((currentItems) => ({
-          ...currentItems,
-          [selectedItem.id]: true
-        }));
+  const handlePurchase = () => {
+    if (nuts >= selectedItem.price) {
+      setMyNuts((currentNuts) => currentNuts - selectedItem.price);
+      setPurchasedItems((currentItems) => [...currentItems, selectedItem.id]);
     
         // Update happiness based on the item purchased
         switch(selectedItem.id) {

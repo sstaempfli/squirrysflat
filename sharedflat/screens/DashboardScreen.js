@@ -61,24 +61,31 @@ export default function DashboardScreen({ navigation }) {
         return 1;
       }
     };
-  const getSquirrelImage = () => {
-    // Logic to determine which image to show based on purchased items
-    if (purchasedItems['1']) {
-      return require('../screens/You/perfume_you.png');
-    } else if (purchasedItems['2']) {
-      return require('../screens/You/clean_you.png');
-    } else if (purchasedItems['3']) {
-      return require('../screens/You/haircut_you.png');
-    } else if (purchasedItems['4']) {
-      return require('../screens/You/hci_you.png');
-    } else if (purchasedItems['5']) {
-      return require('../screens/You/dress_you.png');
-    } else if (purchasedItems['6']) {
-      return require('../screens/You/crown_you.png');
-    } 
-    // Default image
-    return require('../screens/Squirrels/you.png');
-  };
+    function getSquirrelImage(purchasedItems) {
+      if (purchasedItems.length === 0) {
+        // Default image when no purchased items
+        return require('../screens/Squirrels/you.png');
+      }
+      const lastPurchasedItemId = purchasedItems[purchasedItems.length - 1];
+      // Map the last purchased item ID to the corresponding image
+      switch (lastPurchasedItemId) {
+        case '1':
+          return require('../screens/You/perfume_you.png');
+        case '2':
+          return require('../screens/You/clean_you.png');
+        case '3':
+          return require('../screens/You/haircut_you.png');
+        case '4':
+          return require('../screens/You/hci_you.png');
+        case '5':
+          return require('../screens/You/dress_you.png');
+        case '6':
+          return require('../screens/You/crown_you.png');
+        default:
+          // Default image when the last purchased item is not recognized
+          return require('../screens/Squirrels/you.png');
+      }
+    }
   const getHappinessBarColor = (happinessPercentage) => {
     const happiness = parseInt(happinessPercentage, 10); // Convert to integer for comparison
     if (happiness > 66) {
@@ -180,7 +187,7 @@ export default function DashboardScreen({ navigation }) {
                 style={styles.previewContainer} 
                 onPress={() => navigateToScreen('GameScreen')}
             >
-                <Image source={getSquirrelImage()} style={styles.characterImage} />
+                <Image source={getSquirrelImage(purchasedItems)} style={styles.characterImage} />
                 <View style={styles.happinessBarContainer}>
                 <View style={[styles.happinessBar, { width: `${squirrelHappiness}%`, backgroundColor: getHappinessBarColor(squirrelHappiness) }]} />
                 </View>
