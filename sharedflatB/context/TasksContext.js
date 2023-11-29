@@ -27,7 +27,7 @@ export function TasksProvider({ children }) {
     tasksReducer,
     initialTasks
   );
-  const [purchasedItems, setPurchasedItems] = useState('');
+  const [purchasedItems, setPurchasedItems] = useState([]);
 
   const [ myNuts, setMyNuts ] = useState(100)
   const [happiness, setHappiness] = useState(40); // Initial happiness level
