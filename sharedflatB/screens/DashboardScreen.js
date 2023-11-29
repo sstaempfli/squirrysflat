@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Calendar } from 'react-native-calendars';
-import { useState} from 'react';
-import { useTasks } from '../context/TasksContext';
+import { useTasks, usePurchasedItems, useHappiness } from '../context/TasksContext';
 
 export default function DashboardScreen({ navigation }) {
     // Function to navigate to different screens
@@ -50,14 +48,82 @@ export default function DashboardScreen({ navigation }) {
         ['2023-12-15']: [{time:'20:00', title: 'Movie Night'}]
         // Add more events for different dates as needed
     };
+    const purchasedItems = usePurchasedItems(); 
+    const squirrelHappiness=  useHappiness();
+    const getRanking = (squirrelHappiness) => {
+      if (squirrelHappiness < 10) {
+        return 4;
+      } else if (squirrelHappiness >= 10 && squirrelHappiness < 80) {
+        return 3;
+      } else if (squirrelHappiness >= 80 && squirrelHappiness < 100) {
+        return 2;
+      } else {
+        return 1;
+      }
+    };
+  const getSquirrelImage = () => {
+    // Logic to determine which image to show based on purchased items
+    if (purchasedItems['1']) {
+      return require('../screens/You/perfume_you.png');
+    } else if (purchasedItems['2']) {
+      return require('../screens/You/clean_you.png');
+    } else if (purchasedItems['3']) {
+      return require('../screens/You/haircut_you.png');
+    } else if (purchasedItems['4']) {
+      return require('../screens/You/hci_you.png');
+    } else if (purchasedItems['5']) {
+      return require('../screens/You/dress_you.png');
+    } else if (purchasedItems['6']) {
+      return require('../screens/You/crown_you.png');
+    } 
+    // Default image
+    return require('../screens/Squirrels/you.png');
+  };
+  const getHappinessBarColor = (happinessPercentage) => {
+    const happiness = parseInt(happinessPercentage, 10); // Convert to integer for comparison
+    if (happiness > 66) {
+      return 'green';
+    } else if (happiness > 33) {
+      return 'orange';
+    } else {
+      return 'red';
+    }
+  };
 
-    // Initialize marked dates with events
-    const initialMarkedDates = Object.keys(eventsByDate).reduce((acc, date) => {
-        acc[date] = { marked: true, dotColor: 'purple' };
-        return acc;
-    }, {});
+    const getUpcomingEvents = () => {
+      const currentDate = new Date();
+      currentDate.setHours(0, 0, 0, 0); // Resetting time to midnight
+  
+      const upcomingEvents = [];
+  
+      Object.keys(eventsByDate).forEach(date => {
+          const eventDate = new Date(date);
+          if (eventDate >= currentDate) {
+              upcomingEvents.push(...eventsByDate[date].map(event => ({ ...event, date })));
+          }
+      });
+  
+      // Sorting by date
+      upcomingEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+      return upcomingEvents.slice(0, 3);
+  };
+  
+  
+  const UpcomingEventsPreview = () => {
+    const upcomingEvents = getUpcomingEvents();
 
-    const [markedDates, setMarkedDates] = useState(initialMarkedDates);
+    return (
+        <View style={styles.tasksListPreview}>
+            {upcomingEvents.map((event, index) => (
+                <View key={index} style={styles.eventItemContainer}>
+                    <Text style={styles.eventDate}>{formatDate(event.date)}</Text>
+                    <Text style={styles.eventTime}>{event.time}</Text>
+                    <Text style={styles.eventTitle}>{event.title}</Text>
+                </View>
+            ))}
+        </View>
+    );
+};
 
     const yourTasks = [
       { dueDate: '2023-12-4', title:'Vacuum Cleaning', responsible: 'You'},
@@ -103,54 +169,22 @@ export default function DashboardScreen({ navigation }) {
                 style={styles.previewContainer} 
                 onPress={() => navigateToScreen('CalendarScreen')}
             >
-              <View style={styles.calendarContainer} >
-              <Calendar 
-                // Set marking type to period
-                markingType={'period'} 
-                markedDates= {markedDates}
-                theme={{  
-                backgroundColor: '#ffffff', 
-                calendarBackground: '#ffffff', 
-                textSectionTitleColor: '#b6c1cd', 
-                selectedDayBackgroundColor: '#800080', 
-                selectedDayTextColor: '#ffffff', 
-                todayTextColor: 'purple', 
-                dayTextColor: '#2d4150', 
-                textDisabledColor: '#d9e1e8', 
-                dotColor: '#800080', 
-                selectedDotColor: '#800080', 
-                arrowColor: 'black', 
-                monthTextColor: 'purple', 
-                indicatorColor: 'black', 
-                textDayFontSize: 10, 
-                textMonthFontSize: 13, 
-                textDayHeaderFontSize: 10
-            }} 
-            disableMonthChange={true}
-            // Hide arrows
-            hideArrows={true}
-            // Hide day names
-            hideDayNames={true}
-            // Do not show the month in header
-            showMonthText={false}
-            // Prevent navigating to other screens
-            disableAllTouchEventsForDisabledDays={true}
-            // Only allow navigating within the current week
-            enableSwipeMonths={false}
-            /> 
-              </View>
+               <Text style={styles.previewText}> Your Upcoming Events</Text>
               
+              
+                    <UpcomingEventsPreview />
             </TouchableOpacity>
+
             
             <TouchableOpacity 
                 style={styles.previewContainer} 
                 onPress={() => navigateToScreen('GameScreen')}
             >
-                <Image source={require('./Squirrels/you.png')} style={styles.characterImage} />
+                <Image source={getSquirrelImage()} style={styles.characterImage} />
                 <View style={styles.happinessBarContainer}>
-                  <View style={styles.happinessBar} />
+                <View style={[styles.happinessBar, { width: `${squirrelHappiness}%`, backgroundColor: getHappinessBarColor(squirrelHappiness) }]} />
                 </View>
-                <Text>3. You</Text>
+                <Text>{`${getRanking(squirrelHappiness)}. You`}</Text>
             </TouchableOpacity>
         </View>
     );
@@ -167,7 +201,6 @@ const styles = StyleSheet.create({
 },
 previewContainer: {
     width: '90%', 
-    maxHeight: '40%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
@@ -178,6 +211,7 @@ previewContainer: {
     previewText: {
         fontSize: 18,
         fontWeight: 'bold',
+        paddingBottom: 5
         // Add more styles as needed
     },
     characterImage: {
@@ -193,9 +227,7 @@ previewContainer: {
       height:20
     },
     happinessBar: {
-      width: '40%',
       height: 18,
-      backgroundColor: 'orange',
       borderRadius: 10,
     },
     calendarContainer:{
@@ -238,5 +270,33 @@ previewContainer: {
       // Style for the task title
       fontSize: 14,
       fontWeight: 'bold',
-    }
+    },
+    eventItemContainer: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      padding: 8,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ddd', 
+  },
+  eventDate: {
+      width: 60, // adjust the width as needed
+      marginRight: 8, // space between date and time
+      fontSize: 14,
+      color: '#666',
+      textAlign: 'left', // ensures text is aligned to the start of the block
+  },
+  eventTime: {
+      width: 50, // adjust the width as needed
+      marginRight: 8, // space between time and title
+      fontSize: 14,
+      textAlign: 'left',
+  },
+  eventTitle: {
+      fontSize: 14,
+      textAlign: 'left',
+      flex: 1, // takes the remaining space
+      fontWeight: 'bold',
+  },
+
 });

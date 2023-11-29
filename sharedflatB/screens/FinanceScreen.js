@@ -171,10 +171,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginHorizontal: 4,
     borderRadius: 20,
-    backgroundColor: 'lightgrey',
+    backgroundColor: 'white',
   },
   activeButton: {
-    backgroundColor: 'white',
+    backgroundColor: 'lightgrey',
   },
   toggleButtonText: {
     color: 'black',
