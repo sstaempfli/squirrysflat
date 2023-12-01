@@ -144,7 +144,7 @@ export default function DashboardScreen({ navigation }) {
     };
   
     return (
-        <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
             <TouchableOpacity 
                 style={styles.previewContainer} 
                 onPress={() => navigateToScreen('TasksScreen')}
@@ -193,7 +193,7 @@ export default function DashboardScreen({ navigation }) {
                 </View>
                 <Text>{`${getRanking(squirrelHappiness)}. You`}</Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
     );
 }
 

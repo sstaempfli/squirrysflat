@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useTasks, usePurchasedItems, useHappiness } from '../context/TasksContext';
 
 export default function DashboardScreen({ navigation }) {
@@ -144,12 +144,12 @@ export default function DashboardScreen({ navigation }) {
     };
   
     return (
-        <View style={styles.container}>
+        <ScrollView contentContainerStyle={styles.container}>
             <TouchableOpacity 
                 style={styles.previewContainer} 
                 onPress={() => navigateToScreen('TasksScreen')}
             >
-               <Text style={styles.previewText}> Your Upcoming Tasks</Text>
+              <Text style={styles.previewText}> Your Upcoming Tasks</Text>
         {/* Preview of the Tasks */}
         <View style={styles.tasksListPreview}>
           {tasks.filter((task) => task.assignedTo == "You").slice(0, 3).map((task, index) => (
@@ -176,7 +176,7 @@ export default function DashboardScreen({ navigation }) {
                 style={styles.previewContainer} 
                 onPress={() => navigateToScreen('CalendarScreen')}
             >
-               <Text style={styles.previewText}> Your Upcoming Events</Text>
+              <Text style={styles.previewText}> Your Upcoming Events</Text>
               
               
                     <UpcomingEventsPreview />
@@ -193,7 +193,7 @@ export default function DashboardScreen({ navigation }) {
                 </View>
                 <Text>{`${getRanking(squirrelHappiness)}. You`}</Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
     );
 }
 
