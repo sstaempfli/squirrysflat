@@ -196,7 +196,9 @@ export default function TasksScreen() {
             )
           }}
       />
-      <AddButton handlePress={() => setIsFormVisible(true)}/>
+      { !isFormVisible && (
+        <AddButton handlePress={() => setIsFormVisible(true)} />
+      )}
     </>
     
   );
