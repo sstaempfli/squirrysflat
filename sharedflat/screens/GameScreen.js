@@ -46,219 +46,220 @@ const GameScreen = () => {
         return <YouView />;
     }
   };
-const squirrelHappiness= useHappiness();
-const you = getSquirrelImage(purchasedItems);
-const SetHappiness= useSetHappiness();
-// Example data for the character images
-const characters = [
-  { id: '1', name: 'You', happiness: squirrelHappiness, image: you },
-  { id: '2', name: 'Lara', happiness: '80', image: require('./Squirrels/lara.png') },
-  { id: '3', name: 'Sara', happiness: '100', image: require('./Squirrels/Sara.png') },
-  { id: '4', name: 'Lino', happiness: '10', image: require('./Squirrels/Lino.png') },
-];
-const getHappinessBarColor = (happinessPercentage) => {
-  const happiness = parseInt(happinessPercentage, 10); // Convert to integer for comparison
-  if (happiness > 66) {
-    return 'green';
-  } else if (happiness > 33) {
-    return 'orange';
-  } else {
-    return 'red';
-  }
-};
-
-const RankingView = () => {
-  // Sort characters by descending happiness level
-  const sortedCharacters = [...characters].sort((a, b) => b.happiness - a.happiness);
-
-  return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Squirrel Ranking</Text>
-      <FlatList
-        scrollEnabled={false}
-        data={sortedCharacters}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) => (
-          <View style={styles.rankingItem}>
-            <Text style={styles.rankingText}>{index + 1}.</Text>
-            <Text style={styles.rankingText}> {item.name}</Text>
-            <Text style={[styles.rankingText, { color: getHappinessBarColor(item.happiness) }]}>
-              {`${item.happiness}%`}
-            </Text>
-          </View>
-        )}
-      />
-      <View style={styles.characterGrid}>
-        {sortedCharacters.map((character, index) => (
-          <View key={character.id} style={styles.characterContainer}>
-            <Image source={character.image} style={styles.characterImage1} />
-            <View style={styles.happinessBarContainer}>
-              <View style={[
-                styles.happinessBar,
-                { width: `${character.happiness}%`, backgroundColor: getHappinessBarColor(character.happiness) }
-              ]} />
-            </View>
-            <Text style={styles.characterName}>{`${index + 1}. ${character.name}`}</Text>
-          </View>
-        ))}
-      </View>
-    </ScrollView>
-  );
-};
-
-const ShopView = () => {
-  const nutImage = require('./Shop/nut.png');
-  const hygienePackets = [
-    { id: '1', title: 'Perfume', price: 3, image: require('./Shop/perfume.png') },
-    { id: '2', title: 'Fur Washing', price: 7, image: require('./Shop/soap.png') },
-    { id: '3', title: 'New Hairstyle', price: 3, image: require('./Shop/haircut.png') },
-    // ... other hygiene packet items
+  const squirrelHappiness= useHappiness();
+  const you = getSquirrelImage(purchasedItems);
+  const SetHappiness= useSetHappiness();
+  // Example data for the character images
+  const characters = [
+    { id: '1', name: 'You', happiness: squirrelHappiness, image: you },
+    { id: '2', name: 'Lara', happiness: '80', image: require('./Squirrels/lara.png') },
+    { id: '3', name: 'Sara', happiness: '100', image: require('./Squirrels/Sara.png') },
+    { id: '4', name: 'Lino', happiness: '10', image: require('./Squirrels/Lino.png') },
   ];
-
-  const outfits = [
-    { id: '4', title: 'I Love HCI Shirt', price: 10, image: require('./Shop/tshirt.png') },
-    { id: '5', title: 'Princess Dress', price: 6, image: require('./Shop/dress.png') },
-    { id: '6', title: 'Crown', price: 60, image: require('./Shop/crown.png') },
-    // ... other outfit items
-  ];
-  
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  const handleItemClick = (item) => {
-    setSelectedItem(item);
-    setModalVisible(true);
+  const getHappinessBarColor = (happinessPercentage) => {
+    const happiness = parseInt(happinessPercentage, 10); // Convert to integer for comparison
+    if (happiness > 66) {
+      return 'green';
+    } else if (happiness > 33) {
+      return 'orange';
+    } else {
+      return 'red';
+    }
   };
 
-  const handlePurchase = () => {
-    if (nuts >= selectedItem.price) {
-      setMyNuts((currentNuts) => currentNuts - selectedItem.price);
-      setPurchasedItems((currentItems) => [...currentItems, selectedItem.id]);
+  const RankingView = () => {
+    // Sort characters by descending happiness level
+    const sortedCharacters = [...characters].sort((a, b) => b.happiness - a.happiness);
+
+    return (
+      <ScrollView style={styles.container}>
+        <Text style={styles.title}>Squirrel Ranking</Text>
+        <FlatList
+          scrollEnabled={false}
+          data={sortedCharacters}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
+            <View style={styles.rankingItem}>
+              <Text style={styles.rankingText}>{index + 1}.</Text>
+              <Text style={styles.rankingText}> {item.name}</Text>
+              <Text style={[styles.rankingText, { color: getHappinessBarColor(item.happiness) }]}>
+                {`${item.happiness}%`}
+              </Text>
+            </View>
+          )}
+        />
+        <View style={styles.characterGrid}>
+          {sortedCharacters.map((character, index) => (
+            <View key={character.id} style={styles.characterContainer}>
+              <Image source={character.image} style={styles.characterImage1} />
+              <View style={styles.happinessBarContainer}>
+                <View style={[
+                  styles.happinessBar,
+                  { width: `${character.happiness}%`, backgroundColor: getHappinessBarColor(character.happiness) }
+                ]} />
+              </View>
+              <Text style={styles.characterName}>{`${index + 1}. ${character.name}`}</Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    );
+  };
+
+  const ShopView = () => {
+    const nutImage = require('./Shop/nut.png');
+    const hygienePackets = [
+      { id: '1', title: 'Perfume', price: 3, image: require('./Shop/perfume.png') },
+      { id: '2', title: 'Fur Washing', price: 7, image: require('./Shop/soap.png') },
+      { id: '3', title: 'New Hairstyle', price: 3, image: require('./Shop/haircut.png') },
+      // ... other hygiene packet items
+    ];
+
+    const outfits = [
+      { id: '4', title: 'I Love HCI Shirt', price: 10, image: require('./Shop/tshirt.png') },
+      { id: '5', title: 'Princess Dress', price: 6, image: require('./Shop/dress.png') },
+      { id: '6', title: 'Crown', price: 60, image: require('./Shop/crown.png') },
+      // ... other outfit items
+    ];
     
-        // Update happiness based on the item purchased
-        switch(selectedItem.id) {
-          case '1':
-            SetHappiness((squirrelHappiness) => Math.min(100, squirrelHappiness + 3));
-            break;
-          case '2':
-            SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 7));
-            break;
-          case '3':
-            SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 3));
-            break;
-          case '4':
-            SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 10));
-            break;
-          case '5':
-            SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 6));
-            break;
-          case '6':
-            SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 60));
-            break;
-          default:
-            break;
-        }
-    
-        setModalVisible(false);
-      } else {
-        alert("You don't have enough nuts!");
-      }
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+
+    const handleItemClick = (item) => {
+      setSelectedItem(item);
+      setModalVisible(true);
     };
 
-  return (
-    <>
-      <ScrollView style={styles.shopContainer}>
-        <Text style={styles.shopTitle}>Shop</Text>
-        <Text style={styles.totalAmount}>Total: {nuts} <Image source={nutImage} style={styles.nutImage} /></Text>
-        
-        <Text style={styles.sectionTitle}>Hygiene Packets</Text>
-        {/* Horizontal scroll view for hygiene packets */}
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
-        {/* Make sure to bind handleItemClick with the correct item */}
-        {hygienePackets.map((item) => (
-          <TouchableOpacity key={item.id} style={styles.item} onPress={() => handleItemClick(item)}>
-            <View key={item.id} style={styles.item}>
-            <View style={styles.shopImageContainer}>
-            <Image source={item.image} style={styles.shopImage} />
-            </View>
-            <Text style={styles.itemTitle}>{item.title}</Text>
-            <Text style={styles.itemPrice}>{item.price} <Image source={nutImage} style={styles.nutImage} /></Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-         </ScrollView>
-         <Text style={styles.sectionTitle}>Outfits</Text>
-          {/* Horizontal scroll view for outfits */}
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
-          {outfits.map((item) => (
-          <TouchableOpacity key={item.id} style={styles.item} onPress={() => handleItemClick(item)}>
-             <View key={item.id} style={styles.item}>
-                <View style={styles.shopImageContainer}>
-                  <Image source={item.image} style={styles.shopImage} />
-                </View>
-                <Text style={styles.itemTitle}>{item.title}</Text>
-                <Text style={styles.itemPrice}>{item.price} <Image source={nutImage} style={styles.nutImage} /></Text>
-              </View>
-          </TouchableOpacity>
-        ))}
-        </ScrollView> 
-      </ScrollView>
+    const handlePurchase = () => {
+      if (nuts >= selectedItem.price) {
+        setMyNuts((currentNuts) => currentNuts - selectedItem.price);
+        setPurchasedItems((currentItems) => [...currentItems, selectedItem.id]);
+      
+          // Update happiness based on the item purchased
+          switch(selectedItem.id) {
+            case '1':
+              SetHappiness((squirrelHappiness) => Math.min(100, squirrelHappiness + 3));
+              break;
+            case '2':
+              SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 7));
+              break;
+            case '3':
+              SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 3));
+              break;
+            case '4':
+              SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 10));
+              break;
+            case '5':
+              SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 6));
+              break;
+            case '6':
+              SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 60));
+              break;
+            default:
+              break;
+          }
+      
+          setModalVisible(false);
+          setActiveTab('you');
+        } else {
+          alert("You don't have enough nuts!");
+        }
+      };
 
-      {/* Modal Component */}
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-          <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>Do you want to buy {selectedItem?.title} for {selectedItem?.price} nuts?</Text>
-            <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
-              >
-                <Text style={styles.textStyle}>Cancel</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.button, styles.buttonConfirm]}
-                onPress={handlePurchase}
-              >
-                <Text style={styles.textStyle}>Buy</Text>
-              </TouchableOpacity>
+    return (
+      <>
+        <ScrollView style={styles.shopContainer}>
+          <Text style={styles.shopTitle}>Shop</Text>
+          <Text style={styles.totalAmount}>Total: {nuts} <Image source={nutImage} style={styles.nutImage} /></Text>
+          
+          <Text style={styles.sectionTitle}>Hygiene Packets</Text>
+          {/* Horizontal scroll view for hygiene packets */}
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
+          {/* Make sure to bind handleItemClick with the correct item */}
+          {hygienePackets.map((item) => (
+            <TouchableOpacity key={item.id} style={styles.item} onPress={() => handleItemClick(item)}>
+              <View key={item.id} style={styles.item}>
+              <View style={styles.shopImageContainer}>
+              <Image source={item.image} style={styles.shopImage} />
+              </View>
+              <Text style={styles.itemTitle}>{item.title}</Text>
+              <Text style={styles.itemPrice}>{item.price} <Image source={nutImage} style={styles.nutImage} /></Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+          </ScrollView>
+          <Text style={styles.sectionTitle}>Outfits</Text>
+            {/* Horizontal scroll view for outfits */}
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
+            {outfits.map((item) => (
+            <TouchableOpacity key={item.id} style={styles.item} onPress={() => handleItemClick(item)}>
+              <View key={item.id} style={styles.item}>
+                  <View style={styles.shopImageContainer}>
+                    <Image source={item.image} style={styles.shopImage} />
+                  </View>
+                  <Text style={styles.itemTitle}>{item.title}</Text>
+                  <Text style={styles.itemPrice}>{item.price} <Image source={nutImage} style={styles.nutImage} /></Text>
+                </View>
+            </TouchableOpacity>
+          ))}
+          </ScrollView> 
+        </ScrollView>
+
+        {/* Modal Component */}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+            <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Do you want to buy {selectedItem?.title} for {selectedItem?.price} nuts?</Text>
+              <View style={styles.modalButtons}>
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Text style={styles.textStyle}>Cancel</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.button, styles.buttonConfirm]}
+                  onPress={handlePurchase}
+                >
+                  <Text style={styles.textStyle}>Buy</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
-    </>
-  );
-};
-const YouView = () => {
-  const happinessMessage = squirrelHappiness >= 80 ? "Squiry is very happy!" :
-                             squirrelHappiness >= 50 ? "Squiry is fine!" :
-                             "Oh no! Squiry is unhappy!";
- 
-  return (
-    <View style={styles.mainContent}>
-    <Text style={styles.title}>Squiry</Text>
-    <Text style={styles.subtitle}>{happinessMessage}</Text>
-    <Text style={styles.description}>Buy him something nice in the shop</Text>
-    <Image source={ you} style={styles.characterImage} />
-    {/* Happiness Bar */}
-    <View style={styles.happinessBarContainer}>
-      <View style={[styles.happinessBar, { width: `${squirrelHappiness}%`, backgroundColor: getHappinessBarColor(squirrelHappiness) }]} />
+        </Modal>
+      </>
+    );
+  };
+  const YouView = () => {
+    const happinessMessage = squirrelHappiness >= 80 ? "Squiry is very happy!" :
+                              squirrelHappiness >= 50 ? "Squiry is fine!" :
+                              "Oh no! Squiry is unhappy!";
+  
+    return (
+      <View style={styles.mainContent}>
+      <Text style={styles.title}>Squiry</Text>
+      <Text style={styles.subtitle}>{happinessMessage}</Text>
+      <Text style={styles.description}>Buy him something nice in the shop</Text>
+      <Image source={ you} style={styles.characterImage} />
+      {/* Happiness Bar */}
+      <View style={styles.happinessBarContainer}>
+        <View style={[styles.happinessBar, { width: `${squirrelHappiness}%`, backgroundColor: getHappinessBarColor(squirrelHappiness) }]} />
+      </View>
+      <Text style={styles.happinessBarText}>Happiness bar</Text>
+      {/* Action Button */}
+      <TouchableOpacity style={styles.actionButton} onPress={() => setActiveTab('shop')}>
+        <Text style={styles.actionButtonText}>Buy Something</Text>
+      </TouchableOpacity>
     </View>
-    <Text style={styles.happinessBarText}>Happiness bar</Text>
-    {/* Action Button */}
-    <TouchableOpacity style={styles.actionButton} onPress={() => setActiveTab('shop')}>
-      <Text style={styles.actionButtonText}>Buy Something</Text>
-    </TouchableOpacity>
-  </View>
-  );
-};
+    );
+  };
 
   return (
     <View style={styles.container}>
