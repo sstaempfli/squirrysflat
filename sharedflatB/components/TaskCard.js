@@ -67,13 +67,11 @@ function simplifyDate(date){
     )
 }
 
-export default function TaskCard({ task, activeRow, setActiveRow }) {
+export default function TaskCard({ task, activeRow, setActiveRow, isFormVisible, setIsFormVisible }) {
     const due = simplifyDate(task.due)
     const dispatch = useTasksDispatch();
     const myNuts = useMyNuts();
     const setMyNuts = useSetMyNuts();
-    const [isFormVisible, setIsFormVisible] = useState(false);
-
 
     const handleCloseForm = () => {
     // Logic to close the form

@@ -126,6 +126,8 @@ export default function TasksScreen() {
                   task={data.item}
                   activeRow={activeRow}
                   setActiveRow={setActiveRow}
+                  isFormVisible={isFormVisible}
+                  setIsFormVisible={setIsFormVisible}
                 />
               </SwipeRow>
             )

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useTasks, usePurchasedItems, useHappiness } from '../context/TasksContext';
 
 export default function DashboardScreen({ navigation }) {
