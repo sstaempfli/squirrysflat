@@ -234,8 +234,8 @@ const FormComponent = ({ initialData, onSubmit, onClose }) => {
           }}>{priority}</Text>
           <View style={styles.buttonContainer}>
             <View style={styles.inputAndLabel}>
-              <Button title='Done' onPress={handleSubmit} />
               <Button title='Cancel' onPress={onClose} />
+              <Button title='Done' onPress={handleSubmit} />
             </View>  
           </View>
           

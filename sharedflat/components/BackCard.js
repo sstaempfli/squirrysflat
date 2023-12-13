@@ -39,6 +39,19 @@ export default function BackCard({ task }){
         setIsFormVisible(false);
     };
 
+    const handleDelete = (task) => {
+        Alert.alert("Delete Task", "Do you really want to delete this task?", [
+        {
+            text: 'Cancel',
+            onPress: () => {
+            },
+            style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => {
+            dispatch({ type: 'delete', id: task.id})
+        }}])
+    }
+
     const handleSubmitForm = (formData) => {
     // Handle form submission logic here
         let uri
@@ -104,7 +117,7 @@ export default function BackCard({ task }){
                 <View style={styles.deleteCont}>
                     <TouchableOpacity style={styles.opacity}
                         onPress={() => {
-                            dispatch({type: 'delete', id: task.id})
+                            handleDelete(task)
                         }}
                     >
                         <FontAwesome5 name="trash-alt" size={28} color="white" />
