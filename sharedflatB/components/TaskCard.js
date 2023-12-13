@@ -98,7 +98,16 @@ export default function TaskCard({ task, activeRow, setActiveRow, isFormVisible,
         }
     }
     const handleDelete = (task) => {
-        dispatch({ type: 'delete', id: task.id})
+        Alert.alert("Delete Task", "Do you really want to delete this task?", [
+        {
+            text: 'Cancel',
+            onPress: () => {
+            },
+            style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => {
+            dispatch({ type: 'delete', id: task.id})
+        }}])
     }
 
     function handleSubmitForm(formData) {
