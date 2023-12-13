@@ -3,8 +3,12 @@ import { createContext, useContext, useReducer, useState } from 'react';
 const TasksContext = createContext(null);
 
 const TasksDispatchContext = createContext(null);
-
-const PurchasedItemsContext = createContext({});
+const initialPurchasedItems = {
+  head: null,   // For items like crown, haircut
+  body: null,   // For items like dress, shirt
+  outside: null // For items like soap, perfume
+};
+const PurchasedItemsContext = createContext(initialPurchasedItems);
 const SetPurchasedItemsContext = createContext(() => {});
 const HappinessContext = createContext(0);
 const SetHappinessContext = createContext(() => {});
@@ -14,6 +18,19 @@ export function usePurchasedItems() {
   return useContext(PurchasedItemsContext);
 }
 
+/*export function useSetPurchasedItems() {
+  const setPurchasedItems = useContext(SetPurchasedItemsContext);
+
+  // Function to update purchased items based on category
+  const updatePurchasedItems = (category, itemId) => {
+    setPurchasedItems(currentItems => ({
+      ...currentItems,
+      [category]: itemId
+    }));
+  };
+
+  return updatePurchasedItems;
+}*/
 export function useSetPurchasedItems() {
   return useContext(SetPurchasedItemsContext);
 }
@@ -27,7 +44,8 @@ export function TasksProvider({ children }) {
     tasksReducer,
     initialTasks
   );
-  const [purchasedItems, setPurchasedItems] = useState([]);
+  const [purchasedItems, setPurchasedItems] = useState(initialPurchasedItems);
+
 
   const [ myNuts, setMyNuts ] = useState(100)
   const [happiness, setHappiness] = useState(40); // Initial happiness level

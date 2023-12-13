@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Modal } from 'react-native';
 import { useMyNuts, useSetMyNuts, usePurchasedItems, useSetPurchasedItems, useHappiness, useSetHappiness} from '../context/TasksContext';
 
@@ -9,31 +9,156 @@ const GameScreen = () => {
   const setMyNuts = useSetMyNuts(); // Use the setter function to update nuts
   const purchasedItems = usePurchasedItems(); // Use the purchased items
   const setPurchasedItems = useSetPurchasedItems();
-  function getSquirrelImage(purchasedItems) {
-    if (purchasedItems.length === 0) {
-      // Default image when no purchased items
-      return require('../screens/Squirrels/you.png');
-    }
-    const lastPurchasedItemId = purchasedItems[purchasedItems.length - 1];
-    // Map the last purchased item ID to the corresponding image
-    switch (lastPurchasedItemId) {
-      case '1':
-        return require('../screens/You/perfume_you.png');
-      case '2':
-        return require('../screens/You/clean_you.png');
-      case '3':
-        return require('../screens/You/haircut_you.png');
-      case '4':
-        return require('../screens/You/hci_you.png');
-      case '5':
-        return require('../screens/You/dress_you.png');
-      case '6':
-        return require('../screens/You/crown_you.png');
-      default:
-        // Default image when the last purchased item is not recognized
-        return require('../screens/Squirrels/you.png');
-    }
+  const [squirrelImage, setSquirrelImage] = useState(getSquirrelImage(purchasedItems));
+
+  // Update the squirrel image whenever purchasedItems changes
+  useEffect(() => {
+    setSquirrelImage(getSquirrelImage(purchasedItems));
+  }, [purchasedItems]);
+
+  
+  function getCategoryFromItemId(itemId) {
+    return Object.keys(itemCategories).find(category =>
+      itemCategories[category].includes(itemId)
+    );
   }
+  
+  const itemCategories = {
+    head: ['3', '6'], // IDs or names of head items
+    body: ['4', '5'],   // IDs or names of body items
+    outside: ['1', '2'] // IDs or names of outside items
+  };
+  function getSquirrelImage(purchasedItems) {
+    // Define a function to get the image path based on item IDs
+    const getImageBasedOnItems = (headId, bodyId, outsideId) => {
+      if (headId === '3') {
+        if(bodyId === '4'){
+          if (outsideId === '1'){
+            return require('../screens/Squirrels/hair_shirt_parfume.png');
+
+          } else if (outsideId === '2'){
+            return require('../screens/Squirrels/hair_shirt_soap.png');
+
+          } else {
+            return require('../screens/Squirrels/hair_shirt_0.png');
+
+          }
+
+        } else if (bodyId ==='5'){
+          if (outsideId === '1'){
+            return require('../screens/Squirrels/hair_dress_parfume.png');
+
+          } else if (outsideId === '2'){
+            return require('../screens/Squirrels/hair_dress_soap.png');
+
+          } else {
+            return require('../screens/Squirrels/hair_dress_0.png');
+            
+          }
+
+        } else {
+          if (outsideId === '1'){
+            return require('../screens/Squirrels/hair_0_parfume.png');
+
+          } else if (outsideId === '2'){
+            return require('../screens/Squirrels/hair_0_soap.png');
+
+          } else {
+            return require('../screens/Squirrels/hair_0_0.png');
+            
+          }
+
+        }
+      }  else if (headId === '6') {
+        if(bodyId === '4'){
+          if (outsideId === '1'){
+            return require('../screens/Squirrels/crown_shirt_parfume.png');
+
+          } else if (outsideId === '2'){
+            return require('../screens/Squirrels/crown_shirt_soap.png');
+
+          } else {
+            return require('../screens/Squirrels/crown_shirt_0.png');
+
+          }
+
+        } else if (bodyId ==='5'){
+          if (outsideId === '1'){
+            return require('../screens/Squirrels/crown_dress_parfume.png');
+
+          } else if (outsideId === '2'){
+            return require('../screens/Squirrels/crown_dress_soap.png');
+
+          } else {
+            return require('../screens/Squirrels/crown_dress_0.png');
+            
+          }
+
+        } else {
+          if (outsideId === '1'){
+            return require('../screens/Squirrels/crown_0_parfume.png');
+
+          } else if (outsideId === '2'){
+            return require('../screens/Squirrels/crown_0_soap.png');
+
+          } else {
+            return require('../screens/Squirrels/crown_0_0.png');
+            
+          }
+
+        }
+
+      } else {
+        if(bodyId === '4'){
+          if (outsideId === '1'){
+            return require('../screens/Squirrels/0_shirt_parfume.png');
+
+          } else if (outsideId === '2'){
+            return require('../screens/Squirrels/0_shirt_soap.png');
+
+          } else {
+            return require('../screens/Squirrels/0_shirt_0.png');
+
+          }
+
+        } else if (bodyId ==='5'){
+          if (outsideId === '1'){
+            return require('../screens/Squirrels/0_dress_parfume.png');
+
+          } else if (outsideId === '2'){
+            return require('../screens/Squirrels/0_dress_soap.png');
+
+          } else {
+            return require('../screens/Squirrels/0_dress_0.png');
+            
+          } 
+
+        } else {
+          if (outsideId === '1'){
+            return require('../screens/Squirrels/0_0_parfume.png');
+
+          } else if (outsideId === '2'){
+            return require('../screens/Squirrels/0_0_soap.png');
+
+          } else {
+            return require('../screens/Squirrels/0_0_0.png');
+            
+          }
+
+        }
+
+      }
+    };
+  
+    // Extract item IDs from purchasedItems
+    const headId = purchasedItems.head;
+    const bodyId = purchasedItems.body;
+    const outsideId = purchasedItems.outside;
+  
+    // Get the image based on the current items
+    return getImageBasedOnItems(headId, bodyId, outsideId);
+  }
+
   const renderContent = () => {
     switch (activeTab) {
       case 'ranking':
@@ -46,26 +171,26 @@ const GameScreen = () => {
         return <YouView />;
     }
   };
-  const squirrelHappiness= useHappiness();
-  const you = getSquirrelImage(purchasedItems);
-  const SetHappiness= useSetHappiness();
-  // Example data for the character images
-  const characters = [
-    { id: '1', name: 'You', happiness: squirrelHappiness, image: you },
-    { id: '2', name: 'Lara', happiness: '80', image: require('./Squirrels/lara.png') },
-    { id: '3', name: 'Sara', happiness: '100', image: require('./Squirrels/Sara.png') },
-    { id: '4', name: 'Lino', happiness: '10', image: require('./Squirrels/Lino.png') },
-  ];
-  const getHappinessBarColor = (happinessPercentage) => {
-    const happiness = parseInt(happinessPercentage, 10); // Convert to integer for comparison
-    if (happiness > 66) {
-      return 'green';
-    } else if (happiness > 33) {
-      return 'orange';
-    } else {
-      return 'red';
-    }
-  };
+const squirrelHappiness= useHappiness();
+const you = getSquirrelImage(purchasedItems);
+const SetHappiness= useSetHappiness();
+// Example data for the character images
+const characters = [
+  { id: '1', name: 'You', happiness: squirrelHappiness, image: squirrelImage },
+  { id: '2', name: 'Lara', happiness: '80', image: require('./Squirrels/lara.png') },
+  { id: '3', name: 'Sara', happiness: '100', image: require('./Squirrels/Sara.png') },
+  { id: '4', name: 'Lino', happiness: '10', image: require('./Squirrels/Lino.png') },
+];
+const getHappinessBarColor = (happinessPercentage) => {
+  const happiness = parseInt(happinessPercentage, 10); // Convert to integer for comparison
+  if (happiness > 66) {
+    return 'green';
+  } else if (happiness > 33) {
+    return 'orange';
+  } else {
+    return 'red';
+  }
+};
 
   const RankingView = () => {
     // Sort characters by descending happiness level
@@ -115,28 +240,77 @@ const GameScreen = () => {
       // ... other hygiene packet items
     ];
 
-    const outfits = [
-      { id: '4', title: 'I Love HCI Shirt', price: 10, image: require('./Shop/tshirt.png') },
-      { id: '5', title: 'Princess Dress', price: 6, image: require('./Shop/dress.png') },
-      { id: '6', title: 'Crown', price: 60, image: require('./Shop/crown.png') },
-      // ... other outfit items
-    ];
+  const outfits = [
+    { id: '4', title: 'I Love HCI Shirt', price: 10, image: require('./Shop/tshirt.png') },
+    { id: '5', title: 'Princess Dress', price: 6, image: require('./Shop/dress.png') },
+    { id: '6', title: 'Crown', price: 60, image: require('./Shop/crown.png') },
+    // ... other outfit items
+  ];
+  const [previewImage, setPreviewImage] = useState(null);
+  
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleItemClick = (item) => {
+    setSelectedItem(item);
     
-    const [modalVisible, setModalVisible] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
-
-    const handleItemClick = (item) => {
-      setSelectedItem(item);
-      setModalVisible(true);
+    // Generate preview image based on the selected item
+    const newPurchasedItems = {
+      ...purchasedItems,
+      [getCategoryFromItemId(item.id)]: item.id
     };
+    const preview = getSquirrelImage(newPurchasedItems);
+    setPreviewImage(preview);
 
+    setModalVisible(true);
+  };
+
+  /*const handlePurchase = () => {
+    if (nuts >= selectedItem.price) {
+      setMyNuts((currentNuts) => currentNuts - selectedItem.price);
+      setPurchasedItems((currentItems) => [...currentItems, selectedItem.id]);
+    
+        // Update happiness based on the item purchased
+        switch(selectedItem.id) {
+          case '1':
+            SetHappiness((squirrelHappiness) => Math.min(100, squirrelHappiness + 3));
+            break;
+          case '2':
+            SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 7));
+            break;
+          case '3':
+            SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 3));
+            break;
+          case '4':
+            SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 10));
+            break;
+          case '5':
+            SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 6));
+            break;
+          case '6':
+            SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 60));
+            break;
+          default:
+            break;
+        }
+    
+        setModalVisible(false);
+      } else {
+        alert("You don't have enough nuts!");
+      }
+    };*/
     const handlePurchase = () => {
       if (nuts >= selectedItem.price) {
-        setMyNuts((currentNuts) => currentNuts - selectedItem.price);
-        setPurchasedItems((currentItems) => [...currentItems, selectedItem.id]);
-      
-          // Update happiness based on the item purchased
-          switch(selectedItem.id) {
+        setMyNuts(currentNuts => currentNuts - selectedItem.price);
+        
+        const category = getCategoryFromItemId(selectedItem.id);
+        setPurchasedItems(prevItems => ({
+          ...prevItems,
+          [category]: selectedItem.id
+        }));
+    
+        // Update happiness based on the item purchased
+        switch (selectedItem.id) {
             case '1':
               SetHappiness((squirrelHappiness) => Math.min(100, squirrelHappiness + 3));
               break;
@@ -155,16 +329,15 @@ const GameScreen = () => {
             case '6':
               SetHappiness((squirrelHappiness) =>  Math.min(100, squirrelHappiness + 60));
               break;
-            default:
-              break;
-          }
-      
-          setModalVisible(false);
-          setActiveTab('you')
-        } else {
-          alert("You don't have enough nuts!");
+          default:
+            break;
         }
-      };
+        setActiveTab('you');
+        setModalVisible(false);
+      } else {
+        alert("You don't have enough nuts!");
+      }
+    };
 
     return (
       <>
@@ -205,58 +378,56 @@ const GameScreen = () => {
           </ScrollView> 
         </ScrollView>
 
-        {/* Modal Component */}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-            <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Do you want to buy {selectedItem?.title} for {selectedItem?.price} nuts?</Text>
-              <View style={styles.modalButtons}>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <Text style={styles.textStyle}>Cancel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[styles.button, styles.buttonConfirm]}
-                  onPress={handlePurchase}
-                >
-                  <Text style={styles.textStyle}>Buy</Text>
-                </TouchableOpacity>
-              </View>
+      {/* Modal Component */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+          <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+              {/* Preview Image */}
+              {previewImage && <Image source={previewImage} style={styles.previewImage} />}
+            <Text style={styles.modalText}>Wow, you look amazing!</Text>
+            <Text style={styles.modalText}>Do you want to buy {selectedItem?.title} for {selectedItem?.price} nuts?</Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonConfirm]}
+                onPress={handlePurchase}
+              >
+                <Text style={styles.textStyle}>Buy</Text>
+              </TouchableOpacity>
             </View>
           </View>
-        </Modal>
-      </>
-    );
-  };
-  const YouView = () => {
-    const happinessMessage = squirrelHappiness >= 80 ? "Squiry is very happy!" :
-                              squirrelHappiness >= 50 ? "Squiry is fine!" :
-                              "Oh no! Squiry is unhappy!";
-  
-    return (
-      <View style={styles.mainContent}>
-      <Text style={styles.title}>Squiry</Text>
-      <Text style={styles.subtitle}>{happinessMessage}</Text>
-      <Text style={styles.description}>Buy him something nice in the shop</Text>
-      <Image source={ you} style={styles.characterImage} />
-      {/* Happiness Bar */}
-      <View style={styles.happinessBarContainer}>
-        <View style={[styles.happinessBar, { width: `${squirrelHappiness}%`, backgroundColor: getHappinessBarColor(squirrelHappiness) }]} />
-      </View>
-      <Text style={styles.happinessBarText}>Happiness bar</Text>
-      {/* Action Button */}
-      <TouchableOpacity style={styles.actionButton} onPress={() => setActiveTab('shop')}>
-        <Text style={styles.actionButtonText}>Buy Something</Text>
-      </TouchableOpacity>
+        </View>
+      </Modal>
+    </>
+  );
+};
+const YouView = () => {
+  const happinessMessage = squirrelHappiness >= 80 ? "Squiry is very happy!" :
+                             squirrelHappiness >= 50 ? "Squiry is fine!" :
+                             "Oh no! Squiry is unhappy!";
+ 
+  return (
+    <View style={styles.mainContent}>
+    <Text style={styles.title}>Squiry</Text>
+    <Text style={styles.subtitle}>{happinessMessage}</Text>
+    <Text style={styles.description}>Buy him something nice in the shop</Text>
+    <Image source={squirrelImage} style={styles.characterImage} />
+   
+    {/* Happiness Bar */}
+    <View style={styles.happinessBarContainer}>
+      <View style={[styles.happinessBar, { width: `${squirrelHappiness}%`, backgroundColor: getHappinessBarColor(squirrelHappiness) }]} />
     </View>
     );
   };
@@ -531,9 +702,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: '100%'
   },
+  previewImage: {
+    width: 150, // Adjust as needed
+    height: 150,
+    resizeMode: 'contain',
+    marginBottom: 10,
+  },
   // Add styles for content of each tab as per your design
 });
 
 export default GameScreen;
+
 
 
