@@ -62,29 +62,134 @@ export default function DashboardScreen({ navigation }) {
       }
     };
     function getSquirrelImage(purchasedItems) {
-      if (purchasedItems.length === 0) {
-        // Default image when no purchased items
-        return require('../screens/Squirrels/you.png');
-      }
-      const lastPurchasedItemId = purchasedItems[purchasedItems.length - 1];
-      // Map the last purchased item ID to the corresponding image
-      switch (lastPurchasedItemId) {
-        case '1':
-          return require('../screens/You/perfume_you.png');
-        case '2':
-          return require('../screens/You/clean_you.png');
-        case '3':
-          return require('../screens/You/haircut_you.png');
-        case '4':
-          return require('../screens/You/hci_you.png');
-        case '5':
-          return require('../screens/You/dress_you.png');
-        case '6':
-          return require('../screens/You/crown_you.png');
-        default:
-          // Default image when the last purchased item is not recognized
-          return require('../screens/Squirrels/you.png');
-      }
+      // Define a function to get the image path based on item IDs
+      const getImageBasedOnItems = (headId, bodyId, outsideId) => {
+        if (headId === '3') {
+          if(bodyId === '4'){
+            if (outsideId === '1'){
+              return require('../screens/Squirrels/hair_shirt_parfume.png');
+  
+            } else if (outsideId === '2'){
+              return require('../screens/Squirrels/hair_shirt_soap.png');
+  
+            } else {
+              return require('../screens/Squirrels/hair_shirt_0.png');
+  
+            }
+  
+          } else if (bodyId ==='5'){
+            if (outsideId === '1'){
+              return require('../screens/Squirrels/hair_dress_parfume.png');
+  
+            } else if (outsideId === '2'){
+              return require('../screens/Squirrels/hair_dress_soap.png');
+  
+            } else {
+              return require('../screens/Squirrels/hair_dress_0.png');
+              
+            }
+  
+          } else {
+            if (outsideId === '1'){
+              return require('../screens/Squirrels/hair_0_parfume.png');
+  
+            } else if (outsideId === '2'){
+              return require('../screens/Squirrels/hair_0_soap.png');
+  
+            } else {
+              return require('../screens/Squirrels/hair_0_0.png');
+              
+            }
+  
+          }
+        }  else if (headId === '6') {
+          if(bodyId === '4'){
+            if (outsideId === '1'){
+              return require('../screens/Squirrels/crown_shirt_parfume.png');
+  
+            } else if (outsideId === '2'){
+              return require('../screens/Squirrels/crown_shirt_soap.png');
+  
+            } else {
+              return require('../screens/Squirrels/crown_shirt_0.png');
+  
+            }
+  
+          } else if (bodyId ==='5'){
+            if (outsideId === '1'){
+              return require('../screens/Squirrels/crown_dress_parfume.png');
+  
+            } else if (outsideId === '2'){
+              return require('../screens/Squirrels/crown_dress_soap.png');
+  
+            } else {
+              return require('../screens/Squirrels/crown_dress_0.png');
+              
+            }
+  
+          } else {
+            if (outsideId === '1'){
+              return require('../screens/Squirrels/crown_0_parfume.png');
+  
+            } else if (outsideId === '2'){
+              return require('../screens/Squirrels/crown_0_soap.png');
+  
+            } else {
+              return require('../screens/Squirrels/crown_0_0.png');
+              
+            }
+  
+          }
+  
+        } else {
+          if(bodyId === '4'){
+            if (outsideId === '1'){
+              return require('../screens/Squirrels/0_shirt_parfume.png');
+  
+            } else if (outsideId === '2'){
+              return require('../screens/Squirrels/0_shirt_soap.png');
+  
+            } else {
+              return require('../screens/Squirrels/0_shirt_0.png');
+  
+            }
+  
+          } else if (bodyId ==='5'){
+            if (outsideId === '1'){
+              return require('../screens/Squirrels/0_dress_parfume.png');
+  
+            } else if (outsideId === '2'){
+              return require('../screens/Squirrels/0_dress_soap.png');
+  
+            } else {
+              return require('../screens/Squirrels/0_dress_0.png');
+              
+            } 
+  
+          } else {
+            if (outsideId === '1'){
+              return require('../screens/Squirrels/0_0_parfume.png');
+  
+            } else if (outsideId === '2'){
+              return require('../screens/Squirrels/0_0_soap.png');
+  
+            } else {
+              return require('../screens/Squirrels/0_0_0.png');
+              
+            }
+  
+          }
+  
+        }
+      };
+    
+      // Extract item IDs from purchasedItems
+      const headId = purchasedItems.head;
+      const bodyId = purchasedItems.body;
+      const outsideId = purchasedItems.outside;
+    
+      // Get the image based on the current items
+      return getImageBasedOnItems(headId, bodyId, outsideId);
     }
   const getHappinessBarColor = (happinessPercentage) => {
     const happiness = parseInt(happinessPercentage, 10); // Convert to integer for comparison
