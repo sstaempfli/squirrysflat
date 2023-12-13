@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useTasks, usePurchasedItems, useHappiness } from '../context/TasksContext';
 
 export default function DashboardScreen({ navigation }) {
@@ -249,7 +249,7 @@ export default function DashboardScreen({ navigation }) {
     };
   
     return (
-        <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
             <TouchableOpacity 
                 style={styles.previewContainer} 
                 onPress={() => navigateToScreen('TasksScreen')}
@@ -298,7 +298,7 @@ export default function DashboardScreen({ navigation }) {
                 </View>
                 <Text>{`${getRanking(squirrelHappiness)}. You`}</Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
     );
 }
 

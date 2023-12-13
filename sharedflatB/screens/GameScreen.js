@@ -192,53 +192,53 @@ const getHappinessBarColor = (happinessPercentage) => {
   }
 };
 
-const RankingView = () => {
-  // Sort characters by descending happiness level
-  const sortedCharacters = [...characters].sort((a, b) => b.happiness - a.happiness);
+  const RankingView = () => {
+    // Sort characters by descending happiness level
+    const sortedCharacters = [...characters].sort((a, b) => b.happiness - a.happiness);
 
-  return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>Squirrel Ranking</Text>
-      <FlatList
-        scrollEnabled={false}
-        data={sortedCharacters}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item, index }) => (
-          <View style={styles.rankingItem}>
-            <Text style={styles.rankingText}>{index + 1}.</Text>
-            <Text style={styles.rankingText}> {item.name}</Text>
-            <Text style={[styles.rankingText, { color: getHappinessBarColor(item.happiness) }]}>
-              {`${item.happiness}%`}
-            </Text>
-          </View>
-        )}
-      />
-      <View style={styles.characterGrid}>
-        {sortedCharacters.map((character, index) => (
-          <View key={character.id} style={styles.characterContainer}>
-            <Image source={character.image} style={styles.characterImage1} />
-            <View style={styles.happinessBarContainer}>
-              <View style={[
-                styles.happinessBar,
-                { width: `${character.happiness}%`, backgroundColor: getHappinessBarColor(character.happiness) }
-              ]} />
+    return (
+      <ScrollView style={styles.container}>
+        <Text style={styles.title}>Squirrel Ranking</Text>
+        <FlatList
+          scrollEnabled={false}
+          data={sortedCharacters}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item, index }) => (
+            <View style={styles.rankingItem}>
+              <Text style={styles.rankingText}>{index + 1}.</Text>
+              <Text style={styles.rankingText}> {item.name}</Text>
+              <Text style={[styles.rankingText, { color: getHappinessBarColor(item.happiness) }]}>
+                {`${item.happiness}%`}
+              </Text>
             </View>
-            <Text style={styles.characterName}>{`${index + 1}. ${character.name}`}</Text>
-          </View>
-        ))}
-      </View>
-    </ScrollView>
-  );
-};
+          )}
+        />
+        <View style={styles.characterGrid}>
+          {sortedCharacters.map((character, index) => (
+            <View key={character.id} style={styles.characterContainer}>
+              <Image source={character.image} style={styles.characterImage1} />
+              <View style={styles.happinessBarContainer}>
+                <View style={[
+                  styles.happinessBar,
+                  { width: `${character.happiness}%`, backgroundColor: getHappinessBarColor(character.happiness) }
+                ]} />
+              </View>
+              <Text style={styles.characterName}>{`${index + 1}. ${character.name}`}</Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    );
+  };
 
-const ShopView = () => {
-  const nutImage = require('./Shop/nut.png');
-  const hygienePackets = [
-    { id: '1', title: 'Perfume', price: 3, image: require('./Shop/perfume.png') },
-    { id: '2', title: 'Fur Washing', price: 7, image: require('./Shop/soap.png') },
-    { id: '3', title: 'New Hairstyle', price: 3, image: require('./Shop/haircut.png') },
-    // ... other hygiene packet items
-  ];
+  const ShopView = () => {
+    const nutImage = require('./Shop/nut.png');
+    const hygienePackets = [
+      { id: '1', title: 'Perfume', price: 3, image: require('./Shop/perfume.png') },
+      { id: '2', title: 'Fur Washing', price: 7, image: require('./Shop/soap.png') },
+      { id: '3', title: 'New Hairstyle', price: 3, image: require('./Shop/haircut.png') },
+      // ... other hygiene packet items
+    ];
 
   const outfits = [
     { id: '4', title: 'I Love HCI Shirt', price: 10, image: require('./Shop/tshirt.png') },
@@ -338,47 +338,45 @@ const ShopView = () => {
         alert("You don't have enough nuts!");
       }
     };
-    
 
-
-  return (
-    <>
-      <ScrollView style={styles.shopContainer}>
-        <Text style={styles.shopTitle}>Shop</Text>
-        <Text style={styles.totalAmount}>Total: {nuts} <Image source={nutImage} style={styles.nutImage} /></Text>
-        
-        <Text style={styles.sectionTitle}>Hygiene Packets</Text>
-        {/* Horizontal scroll view for hygiene packets */}
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
-        {/* Make sure to bind handleItemClick with the correct item */}
-        {hygienePackets.map((item) => (
-          <TouchableOpacity key={item.id} style={styles.item} onPress={() => handleItemClick(item)}>
-            <View key={item.id} style={styles.item}>
-            <View style={styles.shopImageContainer}>
-            <Image source={item.image} style={styles.shopImage} />
-            </View>
-            <Text style={styles.itemTitle}>{item.title}</Text>
-            <Text style={styles.itemPrice}>{item.price} <Image source={nutImage} style={styles.nutImage} /></Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-         </ScrollView>
-         <Text style={styles.sectionTitle}>Outfits</Text>
-          {/* Horizontal scroll view for outfits */}
+    return (
+      <>
+        <ScrollView style={styles.shopContainer}>
+          <Text style={styles.shopTitle}>Shop</Text>
+          <Text style={styles.totalAmount}>Total: {nuts} <Image source={nutImage} style={styles.nutImage} /></Text>
+          
+          <Text style={styles.sectionTitle}>Hygiene Packets</Text>
+          {/* Horizontal scroll view for hygiene packets */}
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
-          {outfits.map((item) => (
-          <TouchableOpacity key={item.id} style={styles.item} onPress={() => handleItemClick(item)}>
-             <View key={item.id} style={styles.item}>
-                <View style={styles.shopImageContainer}>
-                  <Image source={item.image} style={styles.shopImage} />
-                </View>
-                <Text style={styles.itemTitle}>{item.title}</Text>
-                <Text style={styles.itemPrice}>{item.price} <Image source={nutImage} style={styles.nutImage} /></Text>
+          {/* Make sure to bind handleItemClick with the correct item */}
+          {hygienePackets.map((item) => (
+            <TouchableOpacity key={item.id} style={styles.item} onPress={() => handleItemClick(item)}>
+              <View key={item.id} style={styles.item}>
+              <View style={styles.shopImageContainer}>
+              <Image source={item.image} style={styles.shopImage} />
               </View>
-          </TouchableOpacity>
-        ))}
-        </ScrollView> 
-      </ScrollView>
+              <Text style={styles.itemTitle}>{item.title}</Text>
+              <Text style={styles.itemPrice}>{item.price} <Image source={nutImage} style={styles.nutImage} /></Text>
+              </View>
+            </TouchableOpacity>
+          ))}
+          </ScrollView>
+          <Text style={styles.sectionTitle}>Outfits</Text>
+            {/* Horizontal scroll view for outfits */}
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.horizontalScrollView}>
+            {outfits.map((item) => (
+            <TouchableOpacity key={item.id} style={styles.item} onPress={() => handleItemClick(item)}>
+              <View key={item.id} style={styles.item}>
+                  <View style={styles.shopImageContainer}>
+                    <Image source={item.image} style={styles.shopImage} />
+                  </View>
+                  <Text style={styles.itemTitle}>{item.title}</Text>
+                  <Text style={styles.itemPrice}>{item.price} <Image source={nutImage} style={styles.nutImage} /></Text>
+                </View>
+            </TouchableOpacity>
+          ))}
+          </ScrollView> 
+        </ScrollView>
 
       {/* Modal Component */}
       <Modal
@@ -431,14 +429,8 @@ const YouView = () => {
     <View style={styles.happinessBarContainer}>
       <View style={[styles.happinessBar, { width: `${squirrelHappiness}%`, backgroundColor: getHappinessBarColor(squirrelHappiness) }]} />
     </View>
-    <Text style={styles.happinessBarText}>Happiness bar</Text>
-    {/* Action Button */}
-    <TouchableOpacity style={styles.actionButton} onPress={() => setActiveTab('shop')}>
-      <Text style={styles.actionButtonText}>Buy Something</Text>
-    </TouchableOpacity>
-  </View>
-  );
-};
+    );
+  };
 
   return (
     <View style={styles.container}>

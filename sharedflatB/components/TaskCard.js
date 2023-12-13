@@ -67,13 +67,11 @@ function simplifyDate(date){
     )
 }
 
-export default function TaskCard({ task, activeRow, setActiveRow }) {
+export default function TaskCard({ task, activeRow, setActiveRow, isFormVisible, setIsFormVisible }) {
     const due = simplifyDate(task.due)
     const dispatch = useTasksDispatch();
     const myNuts = useMyNuts();
     const setMyNuts = useSetMyNuts();
-    const [isFormVisible, setIsFormVisible] = useState(false);
-
 
     const handleCloseForm = () => {
     // Logic to close the form
@@ -100,7 +98,16 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
         }
     }
     const handleDelete = (task) => {
-        dispatch({ type: 'delete', id: task.id})
+        Alert.alert("Delete Task", "Do you really want to delete this task?", [
+        {
+            text: 'Cancel',
+            onPress: () => {
+            },
+            style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => {
+            dispatch({ type: 'delete', id: task.id})
+        }}])
     }
 
     function handleSubmitForm(formData) {
