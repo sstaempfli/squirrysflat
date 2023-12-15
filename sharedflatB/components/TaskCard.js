@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Modal, View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Avatar, Badge, Icon, withBadge, CheckBox } from '@rneui/themed';
 import { Feather } from '@expo/vector-icons'; 
@@ -72,10 +72,15 @@ export default function TaskCard({ task, activeRow, setActiveRow, isFormVisible,
     const dispatch = useTasksDispatch();
     const myNuts = useMyNuts();
     const setMyNuts = useSetMyNuts();
+    const [ editFormVisible, setEditFormVisible ] = useState(false)
+
+    useEffect(() => {
+
+    },[editFormVisible])
 
     const handleCloseForm = () => {
     // Logic to close the form
-        setIsFormVisible(false);
+    setEditFormVisible(false);
     };
     
     function handleComplete(task) {
@@ -111,7 +116,6 @@ export default function TaskCard({ task, activeRow, setActiveRow, isFormVisible,
     }
 
     function handleSubmitForm(formData) {
-    // Handle form submission logic here
         let uri
         switch(formData.assignedTo){
         case 'Lino':
@@ -129,7 +133,7 @@ export default function TaskCard({ task, activeRow, setActiveRow, isFormVisible,
         default: 
             uri = "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
         }
-        setIsFormVisible(false);
+        setEditFormVisible(false);
         dispatch({type: 'change', task: {
             ...formData,
             id: task.id,
@@ -187,12 +191,12 @@ export default function TaskCard({ task, activeRow, setActiveRow, isFormVisible,
                 <Modal
                     animationType="slide"
                     transparent={true}
-                    visible={isFormVisible}
+                    visible={editFormVisible}
                     >
                     <FormComponent
-                    initialData={task}
-                    onSubmit={handleSubmitForm}
-                    onClose={handleCloseForm} 
+                        initialData={task}
+                        onSubmit={handleSubmitForm}
+                        onClose={handleCloseForm} 
                     />
                 </Modal>
                 <View style={styles.container}>
@@ -219,7 +223,7 @@ export default function TaskCard({ task, activeRow, setActiveRow, isFormVisible,
                         }}>
                             <TouchableOpacity style={{
                                 flex: 1
-                            }} onPress={() => {setIsFormVisible(true)}}>
+                            }} onPress={() => {setEditFormVisible(true)}}>
                                 <FontAwesome5 name="edit" size={28} color="purple"/>
                             </TouchableOpacity>
                             <TouchableOpacity style={{
