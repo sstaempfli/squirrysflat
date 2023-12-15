@@ -415,22 +415,29 @@ const getHappinessBarColor = (happinessPercentage) => {
 };
 const YouView = () => {
   const happinessMessage = squirrelHappiness >= 80 ? "Squiry is very happy!" :
-                             squirrelHappiness >= 50 ? "Squiry is fine!" :
-                             "Oh no! Squiry is unhappy!";
- 
+                           squirrelHappiness >= 50 ? "Squiry is fine!" :
+                           "Oh no! Squiry is unhappy!";
+  
   return (
     <View style={styles.mainContent}>
-    <Text style={styles.title}>Squiry</Text>
-    <Text style={styles.subtitle}>{happinessMessage}</Text>
-    <Text style={styles.description}>Buy him something nice in the shop</Text>
-    <Image source={squirrelImage} style={styles.characterImage} />
-   
-    {/* Happiness Bar */}
-    <View style={styles.happinessBarContainer}>
-      <View style={[styles.happinessBar, { width: `${squirrelHappiness}%`, backgroundColor: getHappinessBarColor(squirrelHappiness) }]} />
+      <Text style={styles.title}>Squiry</Text>
+      <Text style={styles.subtitle}>{happinessMessage}</Text>
+      <Text style={styles.description}>Buy him something nice in the shop</Text>
+      <Image source={squirrelImage} style={styles.characterImage} />
+     
+      {/* Happiness Bar */}
+      <View style={styles.happinessBarContainer}>
+        <View style={[styles.happinessBar, { width: `${squirrelHappiness}%`, backgroundColor: getHappinessBarColor(squirrelHappiness) }]} />
+      </View>
+      <Text style={styles.happinessBarText}>Happiness bar</Text>
+      {/* Action Button */}
+      <TouchableOpacity style={styles.actionButton} onPress={() => setActiveTab('shop')}>
+        <Text style={styles.actionButtonText}>Buy Something</Text>
+      </TouchableOpacity>
     </View>
-    );
-  };
+  );
+};
+
 
   return (
     <View style={styles.container}>
@@ -710,5 +717,6 @@ const styles = StyleSheet.create({
   },
   // Add styles for content of each tab as per your design
 });
+
 
 export default GameScreen;
