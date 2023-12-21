@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 import { Calendar } from 'react-native-calendars';
 import AddButton from '../components/AddButton';
 
@@ -17,15 +16,27 @@ export default function CalendarScreen() {
 
     // Dummy data for events, indexed by date
     const eventsByDate = {
-        [today]: [{ time: '18:00', title: 'Dinner with flat' }],
-        [tomorrow]: [{ time: '15:00', title: 'Pilates' }],
-        ['2023-11-27']: [{time:'', title: 'Bob\'s Birthday'}],
-        ['2023-11-30']: [{time:'13:00', title: 'Lunch with Alice'}],
-        ['2023-12-05']: [{time:'16:00', title: 'Hairdresser'}],
-        ['2023-12-15']: [{time:'20:00', title: 'Movie Night'}]
+        [today]: [
+            { time: '18:00', title: 'Dinner with flat' },
+        ],
+        [tomorrow]: [
+            { time: '15:00', title: 'Pilates' },
+        ],
+        ['2023-11-27']: [
+            { time: 'all day', title: "Bob's Birthday" },
+            { time: '19:00', title: "Bob's Birthday Party" },
+        ],
+        ['2023-11-30']: [
+            { time: '13:00', title: 'Lunch with Alice' },
+        ],
+        ['2023-12-05']: [
+            { time: '16:00', title: 'Hairdresser' },
+        ],
+        ['2023-12-15']: [
+            { time: '20:00', title: 'Movie Night' },
+        ],
         // Add more events for different dates as needed
     };
-
     // Initialize marked dates with events
     const initialMarkedDates = Object.keys(eventsByDate).reduce((acc, date) => {
         acc[date] = { marked: true, dotColor: 'purple' };
@@ -74,18 +85,18 @@ export default function CalendarScreen() {
                 onDayPress={onDayPress}
             /> 
             <ScrollView style={styles.scrollView}>
-                <View style={styles.eventGroup}>
-                    {eventsByDate[selectedDate]?.length > 0 ? (
-                        eventsByDate[selectedDate].map((event, index) => (
-                            <View key={index} style={styles.event}>
-                                <Text style={styles.eventTime}>{event.time}</Text>
-                                <Text style={styles.eventTitle}>{event.title}</Text>
-                            </View>
-                        ))
-                    ) : (
-                        <Text style={styles.noEventsText}>No events</Text>
-                    )}
-                </View>
+            <View style={styles.eventGroup}>
+    {eventsByDate[selectedDate]?.length > 0 ? (
+        eventsByDate[selectedDate].map((event, index) => (
+            <View key={index} style={styles.event}>
+                <Text style={styles.eventTime}>{event.time}</Text>
+                <Text style={styles.eventTitle}>{event.title}</Text>
+            </View>
+        ))
+    ) : (
+        <Text style={styles.noEventsText}>No events</Text>
+    )}
+</View>
             </ScrollView>
             <AddButton handlePress={() => {}}/>
         </View>
@@ -111,16 +122,24 @@ const styles = StyleSheet.create({
     },
     event: {
         flexDirection: 'row',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         marginBottom: 8,
+        borderLeftWidth: 3,
+        borderLeftColor: 'purple', 
+        padding: 8,
     },
     eventTime: {
+        width: 70,
         fontWeight: 'bold',
         marginRight: 20,
-        fontSize: 18
+        fontSize: 18,
+        textAlign: 'left',
     },
     eventTitle: {
         flex: 1,
-        fontSize: 18
+        fontSize: 18,
+        textAlign: 'left',
     },
     fab: {
         position: 'absolute',

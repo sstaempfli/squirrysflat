@@ -23,27 +23,7 @@ const FormComponent = ({ initialData, onSubmit, onClose }) => {
     const options = { month: 'short', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
-  // const handleSubtaskChange = (text, index) => {
-  //   const newSubtasks = [...subtasks];
-  //   newSubtasks[index] = { ...newSubtasks[index], title: text };
-  //   setSubtasks(newSubtasks);
-  // };
-
-  // const toggleSubtaskChecked = (index) => {
-  //   const newSubtasks = [...subtasks];
-  //   newSubtasks[index].checked = !newSubtasks[index].checked;
-  //   setSubtasks(newSubtasks);
-  // };
-
-  // const addSubtask = () => {
-  //   setSubtasks([...subtasks, { title: '', checked: false }]);
-  // };
-
-  // const deleteSubtask = (index) => {
-  //   const newSubtasks = subtasks.filter((_, i) => i !== index);
-  //   setSubtasks(newSubtasks);
-  // };
-
+  
   const handleSubmit = () => {
     const formData = {
       name: title,
@@ -56,6 +36,7 @@ const FormComponent = ({ initialData, onSubmit, onClose }) => {
     };
     onSubmit(formData);
   };
+
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || dueDate;
 
@@ -234,8 +215,8 @@ const FormComponent = ({ initialData, onSubmit, onClose }) => {
           }}>{priority}</Text>
           <View style={styles.buttonContainer}>
             <View style={styles.inputAndLabel}>
-              <Button title='Done' onPress={handleSubmit} />
               <Button title='Cancel' onPress={onClose} />
+              <Button title='Done' onPress={() => handleSubmit()} />
             </View>  
           </View>
           

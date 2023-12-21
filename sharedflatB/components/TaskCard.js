@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Modal, View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Avatar, Badge, Icon, withBadge, CheckBox } from '@rneui/themed';
 import { Feather } from '@expo/vector-icons'; 
@@ -67,17 +67,20 @@ function simplifyDate(date){
     )
 }
 
-export default function TaskCard({ task, activeRow, setActiveRow }) {
+export default function TaskCard({ task, activeRow, setActiveRow, isFormVisible, setIsFormVisible }) {
     const due = simplifyDate(task.due)
     const dispatch = useTasksDispatch();
     const myNuts = useMyNuts();
     const setMyNuts = useSetMyNuts();
-    const [isFormVisible, setIsFormVisible] = useState(false);
+    const [ editFormVisible, setEditFormVisible ] = useState(false)
 
+    useEffect(() => {
+
+    },[editFormVisible])
 
     const handleCloseForm = () => {
     // Logic to close the form
-        setIsFormVisible(false);
+    setEditFormVisible(false);
     };
     
     function handleComplete(task) {
@@ -86,7 +89,6 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
             {
                 text: 'Cancel',
                 onPress: () => {
-                setBool(true)
                 },
                 style: 'cancel',
             },
@@ -101,11 +103,19 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
         }
     }
     const handleDelete = (task) => {
-        dispatch({ type: 'delete', id: task.id})
+        Alert.alert("Delete Task", "Do you really want to delete this task?", [
+        {
+            text: 'Cancel',
+            onPress: () => {
+            },
+            style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => {
+            dispatch({ type: 'delete', id: task.id})
+        }}])
     }
 
     function handleSubmitForm(formData) {
-    // Handle form submission logic here
         let uri
         switch(formData.assignedTo){
         case 'Lino':
@@ -123,7 +133,7 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
         default: 
             uri = "https://cdn.icon-icons.com/icons2/2716/PNG/512/user_circle_icon_172814.png"
         }
-        setIsFormVisible(false);
+        setEditFormVisible(false);
         dispatch({type: 'change', task: {
             ...formData,
             id: task.id,
@@ -181,12 +191,12 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                 <Modal
                     animationType="slide"
                     transparent={true}
-                    visible={isFormVisible}
+                    visible={editFormVisible}
                     >
                     <FormComponent
-                    initialData={task}
-                    onSubmit={handleSubmitForm}
-                    onClose={handleCloseForm} 
+                        initialData={task}
+                        onSubmit={handleSubmitForm}
+                        onClose={handleCloseForm} 
                     />
                 </Modal>
                 <View style={styles.container}>
@@ -213,7 +223,7 @@ export default function TaskCard({ task, activeRow, setActiveRow }) {
                         }}>
                             <TouchableOpacity style={{
                                 flex: 1
-                            }} onPress={() => {setIsFormVisible(true)}}>
+                            }} onPress={() => {setEditFormVisible(true)}}>
                                 <FontAwesome5 name="edit" size={28} color="purple"/>
                             </TouchableOpacity>
                             <TouchableOpacity style={{

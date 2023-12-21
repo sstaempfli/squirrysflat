@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Image, FlatList, View, Text, Dimensions, Alert, Modal } from "react-native";
+import { useEffect, useState } from "react";
+import { Easing, Animated, Image, FlatList, View, Text, Dimensions, Alert, LayoutAnimation, Modal } from "react-native";
 import { SwipeListView, SwipeRow } from 'react-native-swipe-list-view';
 import TaskCard from "../components/TaskCard";
 import BackCard from "../components/BackCard";
@@ -16,10 +16,42 @@ export default function TasksScreen() {
   const myNuts = useMyNuts()
   const [isFormVisible, setIsFormVisible] = useState(false);
   let [currentId, setCurrentId] = useState(4)
+  let [colorAnim] = useState(new Animated.Value(0));
+
+  let color = colorAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: ['#d7d7d7', '#636363']
+  });
 
   const sortedTasks = [...tasks].sort((a, b) => {
     return new Date(a.due) - new Date(b.due);
   })
+
+  useEffect(() => {
+    Animated.loop(Animated.timing(colorAnim, {
+      toValue: 1, // Change to the end value (1 in this case)
+      duration: 1500,
+      easing: Easing.inOut(Easing.ease),
+      useNativeDriver: false, // Native driver might not support color changes
+    }), {
+      iterations: 3
+    }).start();
+    // Clean up the animation when component unmounts (optional)
+    return () => {
+      colorAnim.removeAllListeners();
+    };
+  }, []);
+
+  // useEffect(() => {
+  //   LayoutAnimation.easeInEaseOut();
+  //   Animated.timing(
+  //     colorAnim,
+  //     {
+  //       toValue: '#47bed1',
+  //       duration: 5000,
+  //     }
+  //   ).start();
+  // })
 
   function handleAdd(formData) {
     let uri
@@ -104,10 +136,13 @@ export default function TasksScreen() {
         alignItems: "center",
         justifyContent: "center",
       }}>
-        <Text style={{
-        fontWeight: '100',
-        paddingRight: '2%',
-        }}>Swipe right to complete</Text>
+        <Animated.Text 
+          useNativeDriver={true}
+          style={{
+          fontWeight: 'bold',
+          paddingRight: '2%',
+          color: color,
+        }}>Swipe right to complete</Animated.Text>
         <View style={{
           backgroundColor: 'white',
           height: 30,
@@ -161,7 +196,9 @@ export default function TasksScreen() {
             )
           }}
       />
-      <AddButton handlePress={() => setIsFormVisible(true)}/>
+      { !isFormVisible && (
+        <AddButton handlePress={() => setIsFormVisible(true)} />
+      )}
     </>
     
   );
