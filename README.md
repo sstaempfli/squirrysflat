@@ -1,5 +1,5 @@
-# hciapp
-Hi-Fi Prototype for HCI project
+# Squirry's Flat
+Hi-Fi Prototype for Squirry's Flat
 
 How to access App:
 - Install Expo Mobile App from App Store
